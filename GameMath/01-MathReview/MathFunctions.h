@@ -18,12 +18,13 @@ public:
 	float RadToDeg(float rad);
 
 	// Open Functions
-	float BasicQuadratic(float x);
-	void Quadratic(float a, float b, float c);
+	float BasicQuadratic(float x);	
 	float Lerp(float start, float end, float alpha);
 	float Distance(float x1, float y1, float x2, float y2);
 
 	// Challenge Functions
-	float PlanePointDist(float x1, float y1, float x2, float y2);
+	float PlanePointDist(float pointVectorX, float pointVectorY, float pointVectorZ, float planeA, float planeB, float planeC, float planeD);
+	void Quadratic(float a, float b, float c);
 };
+
 #endif MATHFUNCTIONS_H
