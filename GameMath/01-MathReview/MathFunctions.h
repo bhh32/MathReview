@@ -2,7 +2,7 @@
 
 #ifndef MATHFUNCTIONS_H
 #define MATHFUNCTIONS_H
-#define PI 3.14159265359
+#define PI 3.14159265359 // Define PI to use it throughout the program
 
 class Functions
 {

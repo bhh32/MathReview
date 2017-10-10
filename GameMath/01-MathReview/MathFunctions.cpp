@@ -36,7 +36,7 @@ float Functions::RadToDeg(float rad)
 
 float Functions::BasicQuadratic(float x)
 {
-	return (x * x) + (2 * x) - 7;
+	return Square(x) + (2 * x) - 7;
 }
 
 float Functions::Lerp(float start, float end, float alpha)
