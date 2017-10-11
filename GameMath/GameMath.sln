@@ -5,6 +5,13 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01-MathReview", "01-MathReview\01-MathReview.vcxproj", "{05C915A6-CD85-4560-A30E-944DF1315DC5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathLib", "MathLib\MathLib.vcxproj", "{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "X-TestSpace", "X-TestSpace\X-TestSpace.vcxproj", "{5F418E2D-E4A8-4274-96A1-199CFA879416}"
+	ProjectSection(ProjectDependencies) = postProject
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2} = {76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +28,22 @@ Global
 		{05C915A6-CD85-4560-A30E-944DF1315DC5}.Release|x64.Build.0 = Release|x64
 		{05C915A6-CD85-4560-A30E-944DF1315DC5}.Release|x86.ActiveCfg = Release|Win32
 		{05C915A6-CD85-4560-A30E-944DF1315DC5}.Release|x86.Build.0 = Release|Win32
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Debug|x64.ActiveCfg = Debug|x64
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Debug|x64.Build.0 = Debug|x64
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Debug|x86.ActiveCfg = Debug|Win32
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Debug|x86.Build.0 = Debug|Win32
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Release|x64.ActiveCfg = Release|x64
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Release|x64.Build.0 = Release|x64
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Release|x86.ActiveCfg = Release|Win32
+		{76308DF6-823B-4B01-AF8D-6E0D02F3DBC2}.Release|x86.Build.0 = Release|Win32
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Debug|x64.ActiveCfg = Debug|x64
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Debug|x64.Build.0 = Debug|x64
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Debug|x86.ActiveCfg = Debug|Win32
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Debug|x86.Build.0 = Debug|Win32
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Release|x64.ActiveCfg = Release|x64
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Release|x64.Build.0 = Release|x64
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Release|x86.ActiveCfg = Release|Win32
+		{5F418E2D-E4A8-4274-96A1-199CFA879416}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
