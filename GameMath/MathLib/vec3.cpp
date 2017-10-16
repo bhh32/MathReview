@@ -114,21 +114,22 @@ bool operator>=(const vec3 &lhs, const vec3 &rhs)
 	return false;
 }
 
-float DotProductVec3(const vec3 &lhs, const vec3 &rhs)
-{
-	return{ (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z) };
-}
-
 float DistanceVec3(const vec3 &lhs, const vec3 &rhs)
 {
 	return sqrt(((rhs.x - lhs.x) * (rhs.x - lhs.x)) + ((rhs.y - lhs.y) * (rhs.y - lhs.y)) + (rhs.z - lhs.z) * (rhs.z - lhs.z));
 }
-
-vec3 CrossProduct(const vec3 &vec)
+float DotProductVec3(const vec3 &lhs, const vec3 &rhs)
 {
-	// ToDo Cross Product gives a perpendicular vector
+	return{ (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z)};
+}
 
-	return vec3();
+vec3 CrossProduct(const vec3 &a, const vec3 &b)
+{
+	float x = (a.y * b.z) - (b.y * a.z);
+	float y = (a.z * b.x) - (b.z * a.x);
+	float z = (a.x * b.y) - (b.x * a.y);
+
+	return{ x, y, z };
 }
 
 vec3 LerpVec3(const vec3 &start, const vec3 &end, float time)
@@ -197,7 +198,7 @@ float &vec3::operator[](const int index)
 	return v[index];
 }
 
-const float &vec3::operator[](const int index) const
+const float vec3::operator[](const int index) const
 {
 	return v[index];
 }

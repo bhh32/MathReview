@@ -2,6 +2,8 @@
 #ifndef VEC3_H
 #define VEC3_H
 
+#include "vec2.h"
+
 union vec3
 {
 	// Access by Array
@@ -16,7 +18,9 @@ union vec3
 	float &operator[](const int index);
 
 	// Returns the element of the vector
-	const float &operator[](const int index) const;
+	const float operator[](const int index) const;
+
+	vec2 xy;
 
 	// Returns the magnitude of a vector
 	float Magnitude();
@@ -75,11 +79,11 @@ bool operator<=(const vec3 &lhs, const vec3 &rhs);
 
 bool operator>=(const vec3 &lhs, const vec3 &rhs);
 
-float DotProductVec3(const vec3 &lhs, const vec3 &rhs);
-
 float DistanceVec3(const vec3 &lhs, const vec3 &rhs);
 
-vec3 CrossProduct(const vec3 &vec);
+float DotProductVec3(const vec3 &lhs, const vec3 &rhs);
+
+vec3 CrossProduct(const vec3 &a, const vec3 &b);
 
 vec3 LerpVec3(const vec3 &start, const vec3 &end, float time);
 

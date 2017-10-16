@@ -117,7 +117,7 @@ float &vec2::operator[](int index)
 	return v[index];
 }
 
-const float & vec2::operator[](const int index) const
+const float vec2::operator[](const int index) const
 {
 	return v[index];
 }

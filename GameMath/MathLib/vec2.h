@@ -16,7 +16,7 @@ union vec2
 	float &operator[](const int index);
 
 	// Returns the element of the vector
-	const float &operator[](const int index) const;
+	const float operator[](const int index) const;
 
 	// Returns the magnitude of a vector
 	float Magnitude();
