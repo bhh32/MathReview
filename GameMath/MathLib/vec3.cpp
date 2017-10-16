@@ -118,6 +118,7 @@ float DistanceVec3(const vec3 &lhs, const vec3 &rhs)
 {
 	return sqrt(((rhs.x - lhs.x) * (rhs.x - lhs.x)) + ((rhs.y - lhs.y) * (rhs.y - lhs.y)) + (rhs.z - lhs.z) * (rhs.z - lhs.z));
 }
+
 float DotProductVec3(const vec3 &lhs, const vec3 &rhs)
 {
 	return{ (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z)};
@@ -141,20 +142,9 @@ vec3 MinVec3(const vec3 &x, const vec3 &y)
 {
 	vec3 temp = x;
 	
-	if (x.x > y.x)
-		temp.x = y.x;
-	else
-		temp.x = x.x;
-
-	if (x.y > y.y)
-		temp.y = y.y;
-	else
-		temp.y = x.y;
-
-	if (x.z > y.z)
-		temp.z = y.z;
-	else
-		temp.z = x.z;
+	temp.x = fmin(x.x, y.x);
+	temp.y = fmin(x.y, y.y);
+	temp.z = fmin(x.z, y.z);
 
 	return{ temp.x, temp.y, temp.z };
 }
@@ -163,43 +153,17 @@ vec3 MaxVec3(const vec3 &x, const vec3 &y)
 {
 	vec3 temp = x;
 
-	if (x.x < y.x)
-		temp.x = y.x;
-	else
-		temp.x = x.x;
-	
-	if (x.y < y.y)
-		temp.y = y.y;
-	else
-		temp.y = x.y;
-
-	if (x.z < y.z)
-		temp.z = y.z;
-	else
-		temp.z = x.z;
+	temp.x = fmax(x.x, y.x);
+	temp.y = fmax(x.y, y.y);
+	temp.z = fmax(x.z, y.z);
 
 	return{ temp.x, temp.y, temp.z };
 }
 
-vec3 Clamp(vec3 &vector, const vec3 min, const vec3 max)
+vec3 Clamp(vec3 &vector, const vec3 a_min, const vec3 a_max)
 {
-	if (vector.x < min.x)
-		vector.x = min.x;
-
-	if (vector.x > max.x)
-		vector.x = max.x;
-
-	if (vector.y < min.y)
-		vector.y = min.y;
-
-	if (vector.y > max.y)
-		vector.y = max.y;
-
-	if (vector.z < min.z)
-		vector.z = min.z;
-
-	if (vector.z > max.z)
-		vector.z = max.z;
+	vector = MinVec3(vector, a_max);
+	vector = MaxVec3(vector, a_min);
 
 	return { vector.x, vector.y, vector.z };
 }
@@ -216,7 +180,7 @@ const float vec3::operator[](const int index) const
 
 float vec3::Magnitude()
 {
-	float length = abs(sqrt((x * x) + (y * y) + (z * z)));
+	float length = abs(sqrtf((x * x) + (y * y) + (z * z)));
 
 	return length;
 }
