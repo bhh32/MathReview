@@ -297,8 +297,10 @@ int main()
 	cout << "(" << MinVec3({ 4, 0 }, { 1, -3 }).x << ", " << MinVec3({ 4, 0 }, { 1, -3 }).y << ")" << endl;
 	cout << "(" << MinVec3({ 8, 2 }, { 1, 4 }).x << ", " << MinVec3({ 8, 2 }, { 1, 4 }).y << ")" << endl;
 	cout << "(" << MinVec3({ 5, 12 }, { 0, 0 }).x << ", " << MinVec3({ 5, 12 }, { 0, 0 }).y << ")" << endl;
+	cout << endl;
 
 	// Max
+	cout << "Vec3 Max Function Test" << endl;
 	cout << "(" << MaxVec3({ 4, 0 }, { 1, -3 }).x << ", " << MaxVec3({ 4, 0 }, { 1, -3 }).y << ")" << endl;
 	cout << "(" << MaxVec3({ 8, 2 }, { 1, 4 }).x << ", " << MaxVec3({ 8, 2 }, { 1, 4 }).y << ")" << endl;
 	cout << "(" << MaxVec3({ 5, 12 }, { 0, 0 }).x << ", " << MaxVec3({ 5, 12 }, { 0, 0 }).y << ")" << endl;
