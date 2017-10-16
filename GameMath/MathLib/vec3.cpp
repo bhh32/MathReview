@@ -193,6 +193,29 @@ vec3 MaxVec3(const vec3 &x, const vec3 &y)
 	return temp;
 }
 
+vec3 Clamp(vec3 &vector, const vec3 min, const vec3 max)
+{
+	if (vector.x < min.x)
+		vector.x = min.x;
+
+	if (vector.x > max.x)
+		vector.x = max.x;
+
+	if (vector.y < min.y)
+		vector.y = min.y;
+
+	if (vector.y > max.y)
+		vector.y = max.y;
+
+	if (vector.z < min.z)
+		vector.z = min.z;
+
+	if (vector.z > max.z)
+		vector.z = max.z;
+
+	return { vector.x, vector.y, vector.z };
+}
+
 float &vec3::operator[](const int index)
 {
 	return v[index];

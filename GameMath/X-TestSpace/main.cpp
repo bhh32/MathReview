@@ -135,12 +135,12 @@ int main()
 	vec3 testA2;
 	testA2.x = 7;
 	testA2.y = 1;
-	testA2.z = 2;
+	testA2.z = 4;
 
 	vec3 testB2;
 	testB2.x = 3;
 	testB2.y = 2;
-	testB2.z = 12;
+	testB2.z = 1;
 
 	// Addition
 	cout << "Vec3 + Operator Test" << endl;
@@ -155,6 +155,8 @@ int main()
 
 	// Subtraction
 	cout << "Vec3 - Operator Test" << endl;
+	testA2 = { 2, 5, 0 };
+	testB2 = { 4, 8 , 6 };
 	vec3 vecDiff2 = testA2 - testB2;
 	cout << "(" << vecDiff2.x << ", " << vecDiff2.y << ", " << vecDiff2.z << ")" << endl;
 	cout << endl;
@@ -166,21 +168,27 @@ int main()
 
 	// Scalar Multiplication
 	cout << "Vec3 Scalar * vec3 Operator Test" << endl;
+	testA2 = { 2, 2, 1 };
 	vec3 scalarMult2 = 3.0f * testA2;
 	cout << "(" << scalarMult2.x << ", " << scalarMult2.y << ", " << scalarMult2.z << ")" << endl;
 	cout << endl;
 
 	cout << "Vec3 vec3 * scalar Operator Test" << endl;
-	scalarMult2 = testB2 * 3.0f;
+	scalarMult2 = testA2 * 3.0f;
 	cout << "(" << scalarMult2.x << ", " << scalarMult2.y << ", " << scalarMult2.z << ")" << endl;
 
 	scalarMult2 *= 5.f;
 	cout << "(" << scalarMult2.x << ", " << scalarMult2.y << ", " << scalarMult2.z << ")" << endl;
+	cout << endl;
 
 	// Scalar Division
-	vec3 scalarDiv2 = testA2 / 5.0f;
+	cout << "Vec3 / Operator Test" << endl;
+	testA2 = { 6, 6, 2 };
+	vec3 scalarDiv2 = testA2 / 2.0f;
 	cout << "(" << scalarDiv2.x << ", " << scalarDiv2.y << ", " << scalarDiv2.z << ")" << endl;
+	cout << endl;
 
+	cout << "Vec3 /= Operator Test" << endl;
 	scalarDiv2 /= 10.f;
 	cout << "(" << scalarDiv2.x << ", " << scalarDiv2.y << ", " << scalarDiv2.z << ")" << endl;
 	cout << endl;
@@ -208,17 +216,18 @@ int main()
 
 	// Subscript Operator
 	cout << "Vec3 Subscript Operator Test" << endl;
+	testA2 = { 7, 4, 9 };
 	for (int i = 0; i < 3; ++i)
 	{
-		cout << testA2.v[i] << endl;
+		cout << "testA index " << i << ": " << testA2.v[i] << endl;
 	}
 	cout << endl;
 	// Magnitude
 	cout << "Vec3 Magnitude Function Test" << endl;
 
-	vec3 mag4 = { 0, 1, 4 };
+	vec3 mag4 = { 0, 1, 0 };
 	vec3 mag5 = { 1, 1, 1 };
-	vec3 mag6 = { -2, 3, 0 };
+	vec3 mag6 = { -2, 3, 2 };
 
 	cout << mag4.Magnitude() << endl;
 	cout << mag5.Magnitude() << endl;
@@ -227,12 +236,16 @@ int main()
 
 	// Normal
 	cout << "Vec3 Normal Function Test" << endl;
+	mag4 = { 0, 1, 0 };
+	mag5 = { 1, 1, 1 };
+	mag6 = { -2, 3, 7 };
+	
 	vec3 mag4Norm = mag4.Normal();
 	vec3 mag5Norm = mag5.Normal();
 	vec3 mag6Norm = mag6.Normal();
-	cout << "(" << mag4Norm.x << ", " << mag4Norm.y << ")" << endl;
-	cout << "(" << mag5Norm.x << ", " << mag5Norm.y << ")" << endl;
-	cout << "(" << mag6Norm.x << ", " << mag6Norm.y << ")" << endl;
+	cout << "(" << mag4Norm.x << ", " << mag4Norm.y << ", " << mag4Norm.z << ")" << endl;
+	cout << "(" << mag5Norm.x << ", " << mag5Norm.y << ", " << mag5Norm.z << ")" << endl;
+	cout << "(" << mag6Norm.x << ", " << mag6Norm.y << ", " << mag6Norm.z << ")" << endl;
 	cout << endl;
 
 	// Normalize
@@ -247,34 +260,42 @@ int main()
 
 	// Dot Product
 	cout << "Vec3 Dot Product Function Test" << endl;
-	vec3 dotA = { 9, 2, 7 };
-	vec3 dotB = { 4, 8, 10 };
+	vec3 dotA = { 7, 2, 4 };
+	vec3 dotB = { 9, 4, 7 };
 	cout << "Dot Product: " << DotProductVec3(dotA, dotB) << endl;
-	dotA = { 7, 4, 6 };
-	dotB = { 67, 13, 10 };
+	dotA = { 1, 1, 0 };
+	dotB = { 1, 0, 0 };
 	cout << "Dot Product: " << DotProductVec3(dotA, dotB) << endl;
-	dotA = { 19, 8, 3 };
-	dotB = { 7, 12, 0 };
+	dotA = { 4, 7, 4 };
+	dotB = { 8, 2, 3 };
 	cout << "Dot Product: " << DotProductVec3(dotA, dotB) << endl;
 	cout << endl;
+
 	// Cross Product
 	cout << "Vec3 Cross Product Function Test" << endl;
-	vec3 a = { 1, 2, 3 };
-	vec3 b = { 4, 5, 6 };
-	cout << "(" << CrossProduct(a, b).x << ", " << CrossProduct(a, b).y << ", " << CrossProduct(a, b).z << ")" << endl;
-	a = { 1, 0, 1 };
-	b = { 1, 1, 10 };
-	cout << "(" << CrossProduct(a, b).x << ", " << CrossProduct(a, b).y << ", " << CrossProduct(a, b).z << ")" << endl;
-	a = { 12, 4, 2 };
-	b = { 3, 0, -3 };
-	cout << "(" << CrossProduct(a, b).x << ", " << CrossProduct(a, b).y << ", " << CrossProduct(a, b).z << ")" << endl;
+	dotA = { 7, 2, 4 };
+	dotB = { 9, 4, 7 };
+	cout << "(" << CrossProduct(dotA, dotB).x << ", " << CrossProduct(dotA, dotB).y << ", " << CrossProduct(dotA, dotB).z << ")" << endl;
+	dotA = { 1, 1, 0 };
+	dotB = { 1, 0, 0 };
+	cout << "(" << CrossProduct(dotA, dotB).x << ", " << CrossProduct(dotA, dotB).y << ", " << CrossProduct(dotA, dotB).z << ")" << endl;
+	dotA = { 4, 7, 4 };
+	dotB = { 8, 2, 3 };
+	cout << "(" << CrossProduct(dotA, dotB).x << ", " << CrossProduct(dotA, dotB).y << ", " << CrossProduct(dotA, dotB).z << ")" << endl;
+	
 	cout << endl;
 
 	// Distance
 	cout << "Vec3 Distance Function Test" << endl;
-	cout << "Dist Vec3: " << DistanceVec3({ 4, 0, 1 }, { 1, -3, 2 }) << endl;
-	cout << "Dist Vec3: " << DistanceVec3({ 8, 2, 10 }, { 1, 4, 3 }) << endl;
-	cout << "Dist Vec3: " << DistanceVec3({ 5, 12, -6 }, { 0, 0, 0 }) << endl;
+	dotA = { 7, 2, 4 };
+	dotB = { 9, 4, 7 };
+	cout << "Dist Vec3: " << DistanceVec3(dotA, dotB) << endl;
+	dotA = { 1, 1, 0 };
+	dotB = { 1, 0, 0 };
+	cout << "Dist Vec3: " << DistanceVec3(dotA, dotB) << endl;
+	dotA = { 4, 7, 4 };
+	dotB = { 8, 2, 3 };
+	cout << "Dist Vec3: " << DistanceVec3(dotA, dotB) << endl;
 	cout << endl;
 
 	// Lerp
@@ -292,19 +313,38 @@ int main()
 	time = 1.f;
 	cout << "(" << LerpVec3(lerpA, lerpB, time).x << ", " << LerpVec3(lerpA, lerpB, time).y << ", " << LerpVec3(lerpA, lerpB, time).z << ")" << endl;
 	cout << endl;
+
 	// Min
 	cout << "Vec3 Min Function Test" << endl;
-	cout << "(" << MinVec3({ 4, 0 }, { 1, -3 }).x << ", " << MinVec3({ 4, 0 }, { 1, -3 }).y << ")" << endl;
-	cout << "(" << MinVec3({ 8, 2 }, { 1, 4 }).x << ", " << MinVec3({ 8, 2 }, { 1, 4 }).y << ")" << endl;
-	cout << "(" << MinVec3({ 5, 12 }, { 0, 0 }).x << ", " << MinVec3({ 5, 12 }, { 0, 0 }).y << ")" << endl;
+	cout << "(" << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).x << ", " << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).y << ", " << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).z << ")" << endl;
+	cout << "(" << MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).x << ", " << MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).y << ", " <<  MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).z << ")" << endl;
+	cout << "(" << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).x << ", " << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).y << ", " << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).z << ")" << endl;
 	cout << endl;
 
 	// Max
 	cout << "Vec3 Max Function Test" << endl;
-	cout << "(" << MaxVec3({ 4, 0 }, { 1, -3 }).x << ", " << MaxVec3({ 4, 0 }, { 1, -3 }).y << ")" << endl;
-	cout << "(" << MaxVec3({ 8, 2 }, { 1, 4 }).x << ", " << MaxVec3({ 8, 2 }, { 1, 4 }).y << ")" << endl;
-	cout << "(" << MaxVec3({ 5, 12 }, { 0, 0 }).x << ", " << MaxVec3({ 5, 12 }, { 0, 0 }).y << ")" << endl;
+	cout << "(" << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).x << ", " << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).y << ", " << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).z << ")" << endl;
+	cout << "(" << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).x << ", " << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).y << ", " << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).z << ")" << endl;
+	cout << "(" << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).x << ", " << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).y << ", " << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).z << ")" << endl;
 	std::cout << std::endl;
+
+	// Clamp
+	cout << "Vec3 Clamp Function Test" << endl;
+	vec3 vector = { 9, 3, 1 };
+	vec3 min = { 7, 2, 4 };
+	vec3 max = { 9, 4, 7 };
+	cout << "(" << Clamp(vector, min, max).x << ", " << Clamp(vector, min, max).y << ", " << Clamp(vector, min, max).z << ")" << endl;
+
+	vector = { 8,2,8 };
+	min = { 1,1,0 };
+	max = { 1,2,0 };
+	cout << "(" << Clamp(vector, min, max).x << ", " << Clamp(vector, min, max).y << ", " << Clamp(vector, min, max).z << ")" << endl;
+
+	vector = { 4,5,6 };
+	min = { 4,7,4 };
+	max = { 8,9,7 };
+	cout << "(" << Clamp(vector, min, max).x << ", " << Clamp(vector, min, max).y << ", " << Clamp(vector, min, max).z << ")" << endl;
+	cout << endl;
 
 	while (true) {};
 	return 0;

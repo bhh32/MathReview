@@ -91,4 +91,6 @@ vec3 MinVec3(const vec3 &x, const vec3 &y);
 
 vec3 MaxVec3(const vec3 &x, const vec3 &y);
 
+vec3 Clamp(vec3 &vector, const vec3 min, const vec3 max);
+
 #endif VEC3_H
