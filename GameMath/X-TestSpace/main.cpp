@@ -121,12 +121,12 @@ int main()
 	cout << "(" << Lerp({ 5, 12 }, { 7, 4 }, 1.0f).x << ", " << Lerp({ 5, 12 }, { 7, 4 }, 1.0f).y << ")" << endl;
 
 	// Min
-	cout << "(" << Min({ 4, 0 }, { 1, -3 }).x << ", " << Min({ 4, 0 }, { 1, -3 }).y << ")" << endl;
+	cout << "Min " << "(" << Min({ 4, 0 }, { 1, -3 }).x << ", " << Min({ 4, 0 }, { 1, -3 }).y << ")" << endl;
 	cout << "(" << Min({ 8, 2 }, { 1, 4 }).x << ", " << Min({ 8, 2 }, { 1, 4 }).y << ")" << endl;
 	cout << "(" << Min({ 5, 12 }, { 0, 0 }).x << ", " << Min({ 5, 12 }, { 0, 0 }).y << ")" << endl;
 
 	// Max
-	cout << "(" << Max({ 4, 0 }, { 1, -3 }).x << ", " << Max({ 4, 0 }, { 1, -3 }).y << ")" << endl;
+	cout << "Max " << "(" << Max({ 4, 0 }, { 1, -3 }).x << ", " << Max({ 4, 0 }, { 1, -3 }).y << ")" << endl;
 	cout << "(" << Max({ 8, 2 }, { 1, 4 }).x << ", " << Max({ 8, 2 }, { 1, 4 }).y << ")" << endl;
 	cout << "(" << Max({ 5, 12 }, { 0, 0 }).x << ", " << Max({ 5, 12 }, { 0, 0 }).y << ")" << endl;
 	std::cout << std::endl;
@@ -316,9 +316,15 @@ int main()
 
 	// Min
 	cout << "Vec3 Min Function Test" << endl;
-	cout << "(" << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).x << ", " << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).y << ", " << MinVec3({ 7, 2, 4 }, { 9, 4, 7 }).z << ")" << endl;
-	cout << "(" << MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).x << ", " << MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).y << ", " <<  MinVec3({ 1, 1, 0 }, { 1, 0, 0 }).z << ")" << endl;
-	cout << "(" << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).x << ", " << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).y << ", " << MinVec3({ 4, 7, 4 }, { 8, 2, 3 }).z << ")" << endl;
+	vec3 checkVecA = { 7, 2, 4 };
+	vec3 checkVecB = { 9, 4, 7 };
+	cout << "(" << MinVec3(checkVecA, checkVecB).x << ", " << MinVec3(checkVecA, checkVecB).y << ", " << MinVec3(checkVecA, checkVecB).z << ")" << endl;
+	checkVecA = { 1, 1, 0 };
+	checkVecB = { 1, 0, 0 };
+	cout << "(" << MinVec3(checkVecA, checkVecB).x << ", " << MinVec3(checkVecA, checkVecB).y << ", " <<  MinVec3(checkVecA, checkVecB).z << ")" << endl;
+	checkVecA = { 4, 7, 4 };
+	checkVecB = { 8, 2, 3 };
+	cout << "(" << MinVec3(checkVecA, checkVecB).x << ", " << MinVec3(checkVecA, checkVecB).y << ", " << MinVec3(checkVecA, checkVecB).z << ")" << endl;
 	cout << endl;
 
 	// Max
@@ -326,7 +332,7 @@ int main()
 	cout << "(" << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).x << ", " << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).y << ", " << MaxVec3({ 7, 2, 4 }, { 9, 4, 7 }).z << ")" << endl;
 	cout << "(" << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).x << ", " << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).y << ", " << MaxVec3({ 1, 1, 0 }, { 1, 0, 0 }).z << ")" << endl;
 	cout << "(" << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).x << ", " << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).y << ", " << MaxVec3({ 4, 7, 4 }, { 8, 2, 3 }).z << ")" << endl;
-	std::cout << std::endl;
+	cout << endl;
 
 	// Clamp
 	cout << "Vec3 Clamp Function Test" << endl;

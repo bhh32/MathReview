@@ -139,58 +139,46 @@ vec3 LerpVec3(const vec3 &start, const vec3 &end, float time)
 
 vec3 MinVec3(const vec3 &x, const vec3 &y)
 {
-	vec3 temp;
-
-	if (x.x < y.x)
-		temp.x = x.x;
-	else if (x.x == y.x)
-		temp.x = x.x;
-	else
+	vec3 temp = x;
+	
+	if (x.x > y.x)
 		temp.x = y.x;
-
-	if (x.y < y.y)
-		temp.y = x.y;
-	else if (x.y == y.y)
-		temp.y = x.y;
 	else
+		temp.x = x.x;
+
+	if (x.y > y.y)
 		temp.y = y.y;
-
-	if (x.z < y.z)
-		temp.z = x.z;
-	else if (x.z == y.z)
-		temp.z = x.z;
 	else
-		temp.z = y.z;
+		temp.y = x.y;
 
-	return temp;
+	if (x.z > y.z)
+		temp.z = y.z;
+	else
+		temp.z = x.z;
+
+	return{ temp.x, temp.y, temp.z };
 }
 
 vec3 MaxVec3(const vec3 &x, const vec3 &y)
 {
-	vec3 temp;
+	vec3 temp = x;
 
-	if (x.x > y.x)
-		temp.x = x.x;
-	else if (x.x == y.x)
-		temp.x = x.x;
-	else
+	if (x.x < y.x)
 		temp.x = y.x;
-
-	if (x.y > y.y)
-		temp.y = x.y;
-	else if (x.y == y.y)
-		temp.y = x.y;
 	else
+		temp.x = x.x;
+	
+	if (x.y < y.y)
 		temp.y = y.y;
-
-	if (x.z > y.z)
-		temp.z = x.z;
-	else if (x.z == y.z)
-		temp.z = x.z;
 	else
-		temp.z = y.z;
+		temp.y = x.y;
 
-	return temp;
+	if (x.z < y.z)
+		temp.z = y.z;
+	else
+		temp.z = x.z;
+
+	return{ temp.x, temp.y, temp.z };
 }
 
 vec3 Clamp(vec3 &vector, const vec3 min, const vec3 max)
