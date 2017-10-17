@@ -2,14 +2,14 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "mathutils.h"
-
+#include "mat3.h"
 using std::cout;
 using std::endl;
 
 int main()
 {
 
-	cout << "Vector2 Tests" << endl;
+	/*cout << "Vector2 Tests" << endl;
 	cout << endl;
 
 	vec2 testA;
@@ -350,7 +350,8 @@ int main()
 	min = { 4,7,4 };
 	max = { 8,9,7 };
 	cout << "(" << Clamp(vector, min, max).x << ", " << Clamp(vector, min, max).y << ", " << Clamp(vector, min, max).z << ")" << endl;
-	cout << endl;
+	cout << endl;*/
+
 
 	while (true) {};
 	return 0;
