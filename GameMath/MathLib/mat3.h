@@ -5,9 +5,10 @@
 union mat3
 {
 	// 3 ways of representing the same thing
+	vec3 c[3];
 	float m[9];
 	float mm[3][3];
-	vec3 c[3];
+	
 
 	vec3 &operator[](unsigned idx); // Column accessor
 	const vec3 &operator[](unsigned idx) const;
@@ -19,11 +20,13 @@ mat3 operator+(const mat3 &A, const mat3 &B); // Not really used
 mat3 operator-(const mat3 &A, const mat3 &B); // Not really used
 
 mat3 operator*(const mat3 &A, const mat3 &B); // Combine Transformations
-mat3 operator*(const mat3 &A, const vec3 &V); // Apply a Transformation
+vec3 operator*(const mat3 &A, const vec3 &V); // Apply a Transformation
+mat3 operator*(const float &x, const mat3 &A); // Multiply a scalar by the matrix
+
+bool operator==(const mat3 &A, const mat3 &B);
 
 mat3 Transpose(const mat3 &A); // Flip the rows and columns
 
-// Challenge Functions
 float Determinant(const mat3 &A);
 mat3 Inverse(const mat3 &A);
 

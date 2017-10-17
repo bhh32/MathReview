@@ -1,5 +1,4 @@
 #include "mat3.h"
-
 vec3 & mat3::operator[](unsigned idx)
 {
 	return c[idx];
@@ -15,7 +14,6 @@ mat3 mat3::Identity()
 	mat3 identity = { 1, 0, 0,
 					  0, 1, 0,
 					  0, 0, 1 };
-	//m = identity;
 
 	return identity;
 }
@@ -41,13 +39,38 @@ mat3 operator*(const mat3 &A, const mat3 &B)
 	return temp;
 }
 
-mat3 operator*(const mat3 &A, const vec3 &V)
+vec3 operator*(const mat3 &A, const vec3 &V)
 {
-	mat3 temp = { (A.m[0] * V.x + A.m[1] * V.y + A.m[2] * V.z), (A.m[0] * V.x + A.m[1] * V.y + A.m[2] * V.z), (A.m[0] * V.x + A.m[1] * V.y + A.m[2] * V.z),
-		(A.m[3] * V.x + A.m[4] * V.y + A.m[5] * V.z), (A.m[3] * V.x + A.m[4] * V.y + A.m[5] * V.z), (A.m[3] * V.x + A.m[4] * V.y + A.m[5] * V.z),
-		(A.m[6] * V.x + A.m[7] * V.y + A.m[8] * V.z), (A.m[6] * V.x + A.m[7] * V.y + A.m[8] * V.z), (A.m[6] * V.x + A.m[7] * V.y + A.m[8] * V.z) };
-	
+	mat3 At = Transpose(A);
+
+	return vec3{ (DotProductVec3(At[0], V),
+				DotProductVec3(At[2], V),
+				DotProductVec3(At[3], V)) };
+}
+
+mat3 operator*(const float &x, const mat3 &A)
+{
+	mat3 temp = { x * A.m[0], x * A.m[1], x * A.m[2],
+				  x * A.m[3], x * A.m[4], x * A.m[5],
+				  x * A.m[6], x * A.m[7], x * A.m[7] };
+
 	return temp;
+}
+
+bool operator==(const mat3 &A, const mat3 &B)
+{
+	int counter = 0;
+
+	for (int i = 0; i < 9; ++i)
+	{
+		if (A.m[i] == B.m[i])
+			counter++;
+	}
+
+	if (counter == 8)
+		return true;
+
+	return false;
 }
 
 mat3 Transpose(const mat3 &A)
@@ -61,10 +84,27 @@ mat3 Transpose(const mat3 &A)
 
 float Determinant(const mat3 &A)
 {
-	return 0.0f;
+	float temp = DotProductVec3(A[0], CrossProduct(A[1], A[2]));
+
+	return temp;
 }
 
 mat3 Inverse(const mat3 &A)
 {
-	return mat3();
+	float di = 1 / Determinant(A);
+
+	mat3 inverse = Transpose(mat3{
+		CrossProduct(A[1], A[2]) * di,
+		CrossProduct(A[2], A[0]) * di,
+		CrossProduct(A[0], A[1]) * di });
+
+	// Make any -0 an actual 0
+	for (int i = 0; i < 9; ++i)
+	{
+		if (inverse.m[i] == -0)
+			inverse.m[i] = 0;
+	}
+
+	return inverse;
+
 }
