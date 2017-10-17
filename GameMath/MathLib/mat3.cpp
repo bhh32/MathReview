@@ -1,4 +1,6 @@
 #include "mat3.h"
+#include <cmath>
+
 vec3 & mat3::operator[](unsigned idx)
 {
 	return c[idx];
@@ -107,4 +109,37 @@ mat3 Inverse(const mat3 &A)
 
 	return inverse;
 
+}
+
+mat3 Translate(const vec2 & t)
+{
+	mat3 retval = mat3::Identity();
+
+	retval[2].xy = t;
+
+	return retval;
+}
+
+mat3 Scale(const vec2 & s)
+{
+	return mat3{ s.x, 0, 0,
+				  0, s.y, 0,
+				  0,   0, 1 };
+}
+
+mat3 scale(float x, float y)
+{
+	return mat3{ x, 0, 0,
+				 0, y, 0,
+				 0, 0, 1 };
+}
+
+mat3 Rotation(float deg)
+{
+
+	float rads = deg * (PI / 180);
+
+	return mat3{ cosf(rads), -sinf(rads), 0,
+	             sinf(rads),  cosf(rads), 0,
+	                0,          0,      1 };
 }

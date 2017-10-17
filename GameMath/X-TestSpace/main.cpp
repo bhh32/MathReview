@@ -1,8 +1,9 @@
 #include <iostream>
 #include "vec2.h"
 #include "vec3.h"
-#include "mathutils.h"
 #include "mat3.h"
+#include <assert.h>
+#include "sfwdraw.h"
 
 using std::cout;
 using std::endl;
@@ -353,24 +354,32 @@ int main()
 	//cout << "(" << Clamp(vector, min, max).x << ", " << Clamp(vector, min, max).y << ", " << Clamp(vector, min, max).z << ")" << endl;
 	//cout << endl; */
 
-	mat3 A = { 3, 0, 2,
-			   2, 0, -2,
-			   0, 1, 1 };
+	/*	mat3 A = { 3, 0, 2,
+				   2, 0, -2,
+				   0, 1, 1 };
 
-	mat3 check = A * Inverse(A);
+		mat3 check = A * Inverse(A);
 
-	cout << "A * Inverse(A): \n";
-	cout << "                " << check.m[0] << " " << check.m[1] << " " << check.m[2] << endl;
-	cout << "                " << check.m[3] << " " << check.m[4] << " " << check.m[5] << endl;
-	cout << "                " << check.m[6] << " " << check.m[7] << " " << check.m[8] << endl;
+		cout << "A * Inverse(A): \n";
+		cout << "                " << check.m[0] << " " << check.m[1] << " " << check.m[2] << endl;
+		cout << "                " << check.m[3] << " " << check.m[4] << " " << check.m[5] << endl;
+		cout << "                " << check.m[6] << " " << check.m[7] << " " << check.m[8] << endl;
+
+		cout << endl;
+
+	mat3 inverse = Inverse(A);
+
+	cout << "The Inverse of matrix A is: " << inverse.m[0] << " " << inverse.m[1] << " " << inverse.m[2] << endl;
+	cout << "                            " << inverse.m[3] << " " << inverse.m[4] << " " << inverse.m[5] << endl;
+	cout << "                            " << inverse.m[6] << " " << inverse.m[7] << " " << inverse.m[8] << endl;
+
+	*/
+
+	mat3 T = Scale(vec2{ 1,2 }) * Rotation(90) * Translate(vec2{ 3, 0 });
+	//assert((T[2] == vec3{ 0, 6, 1 }));
+
+
 	
-	cout << endl;
-
-mat3 inverse = Inverse(A);
-
-cout << "The Inverse of matrix A is: " << inverse.m[0] << " " << inverse.m[1] << " " << inverse.m[2] << endl;
-cout << "                            " << inverse.m[3] << " " << inverse.m[4] << " " << inverse.m[5] << endl;
-cout << "                            " << inverse.m[6] << " " << inverse.m[7] << " " << inverse.m[8] << endl;
 	while (true) {};
 	return 0;
 }
