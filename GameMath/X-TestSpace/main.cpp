@@ -2,8 +2,10 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "mat3.h"
+#include "mathutils.h"
 #include <assert.h>
 #include "sfwdraw.h"
+#include "Transform.h"
 
 using std::cout;
 using std::endl;
@@ -375,11 +377,30 @@ int main()
 
 	*/
 
-	mat3 T = Scale(vec2{ 1,2 }) * Rotation(90) * Translate(vec2{ 3, 0 });
-	//assert((T[2] == vec3{ 0, 6, 1 }));
+	/*mat3 T = Scale(vec2{ 1,2 }) * 
+		     Rotation(90) * 
+		     Translate(vec2{ 3, 0 });
 
+	assert((T[2].xy == vec2{ 0, 6 }));*/
 
-	
-	while (true) {};
+	sfw::initContext();
+
+	Transform myTransform;
+	myTransform.position = vec2{ 300, 400 };
+	myTransform.demension = vec2{ 1, 1 };
+
+	while (sfw::stepContext()) 
+	{
+		float time = sfw::getTime();
+		// Rotate you object around clockwise
+		myTransform.angle += -200 * sfw::getDeltaTime();
+
+		// Scale the object
+		myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
+
+		DrawMatrix(myTransform.GetLocalTransform(), 40);
+		
+	};
+
 	return 0;
 }

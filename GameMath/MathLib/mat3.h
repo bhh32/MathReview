@@ -34,12 +34,12 @@ mat3 Inverse(const mat3 &A);
 
 /*
 // Translation Matrix
-[1 0 x]
-[0 1 y]
-[0 0 1]
+[1 0 0]
+[0 1 0]
+[x y 1]
 */
 mat3 Translate(const vec2 &t);
-
+mat3 Translate(float x, float y);
 /*
 // Scale Matrix
 [x 0 0]
@@ -47,7 +47,7 @@ mat3 Translate(const vec2 &t);
 [0 0 1]
 */
 mat3 Scale(const vec2 &s);
-mat3 scale(float x, float y);
+mat3 Scale(float x, float y);
 
 /*
 
@@ -55,9 +55,9 @@ A[0].xy is the x-axis
 A[1].xy is the y-axis
 
  Rotation Matrix
- [cos(a)  -sin(a)]
- [sin(a)   cos(a)]
- [  0        0   ]
+ [ cos(a)   sin(a)   0] x-axis
+ [-sin(a)   cos(a)   0] y-axis
+ [  0        0       1]
 */
 mat3 Rotation(float deg);
 

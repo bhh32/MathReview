@@ -32,11 +32,15 @@ mat3 operator-(const mat3 &A, const mat3 &B)
 		(A.m[3] - B.m[3]), (A.m[4] - B.m[4]), (A.m[5] - B.m[5]) };
 }
 
+// rows of the first by columns of the second
+// 0 3 6
+// 1 4 7 
+// 2 5 8
 mat3 operator*(const mat3 &A, const mat3 &B)
 {
-	mat3 temp = { (A.m[0] * B.m[0] + A.m[1] * B.m[3] + A.m[2] * B.m[6]), (A.m[0] * B.m[1] + A.m[1] * B.m[4] + A.m[2] * B.m[7]), (A.m[0] * B.m[2] + A.m[1] * B.m[5] + A.m[2] * B.m[8]),
-		          (A.m[3] * B.m[0] + A.m[4] * B.m[3] + A.m[5] * B.m[6]), (A.m[3] * B.m[1] + A.m[4] * B.m[4] + A.m[5] * B.m[7]), (A.m[3] * B.m[2] + A.m[4] * B.m[5] + A.m[5] * B.m[8]),
-		          (A.m[6] * B.m[0] + A.m[7] * B.m[3] + A.m[8] * B.m[6]), (A.m[6] * B.m[1] + A.m[7] * B.m[4] + A.m[8] * B.m[7]), (A.m[6] * B.m[2] + A.m[7] * B.m[5] + A.m[8] * B.m[8]) };
+	mat3 temp = { (B.m[0] * A.m[0] + B.m[1] * A.m[3] + B.m[2] * A.m[6]), (B.m[0] * A.m[1] + B.m[1] * A.m[4] + B.m[2] * A.m[7]), (B.m[0] * A.m[2] + B.m[1] * B.m[5] + B.m[2] * A.m[8]), // x-axis
+		          (B.m[3] * A.m[0] + B.m[4] * A.m[3] + B.m[5] * A.m[6]), (B.m[3] * A.m[1] + B.m[4] * A.m[4] + B.m[5] * A.m[7]), (B.m[3] * A.m[2] + B.m[4] * B.m[5] + B.m[5] * A.m[8]), // y-axis
+		          (B.m[6] * A.m[0] + B.m[7] * A.m[3] + B.m[8] * A.m[6]), (B.m[6] * A.m[1] + B.m[7] * A.m[4] + B.m[8] * A.m[7]), (B.m[6] * A.m[2] + B.m[7] * B.m[5] + B.m[8] * A.m[8]) }; // position
 	
 	return temp;
 }
@@ -111,7 +115,7 @@ mat3 Inverse(const mat3 &A)
 
 }
 
-mat3 Translate(const vec2 & t)
+mat3 Translate(const vec2 &t)
 {
 	mat3 retval = mat3::Identity();
 
@@ -120,17 +124,24 @@ mat3 Translate(const vec2 & t)
 	return retval;
 }
 
+mat3 Translate(float x, float y)
+{
+	return mat3{1, 0, 0,    // x-axis
+	            0, 1, 0,    // y-axis
+	            x, y, 1 };
+}
+
 mat3 Scale(const vec2 & s)
 {
-	return mat3{ s.x, 0, 0,
-				  0, s.y, 0,
+	return mat3{ s.x, 0, 0, // x-axis
+				  0, s.y, 0, // y-axis
 				  0,   0, 1 };
 }
 
-mat3 scale(float x, float y)
+mat3 Scale(float x, float y)
 {
-	return mat3{ x, 0, 0,
-				 0, y, 0,
+	return mat3{ x, 0, 0, // x-axis
+				 0, y, 0, // y-axis
 				 0, 0, 1 };
 }
 
@@ -139,7 +150,7 @@ mat3 Rotation(float deg)
 
 	float rads = deg * (PI / 180);
 
-	return mat3{ cosf(rads), -sinf(rads), 0,
-	             sinf(rads),  cosf(rads), 0,
+	return mat3{  cosf(rads),  sinf(rads), 0, // X-axis
+	             -sinf(rads),  cosf(rads), 0, // Y-axis
 	                0,          0,      1 };
 }

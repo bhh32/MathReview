@@ -1,6 +1,6 @@
 #include "vec2.h"
 #include <cmath>
-#include <cfloat>
+#include "mathutils.h"
 
 vec2 operator+(const vec2 &lhs, const vec2 &rhs)
 {
@@ -32,24 +32,24 @@ bool operator==(const vec2 & lhs, const vec2 & rhs)
 	// floating-point math is weird! check this out!
 	// http://floating-point-gui.de/errors/comparison/
 
-	if (abs(lhs.x - rhs.x) < FLT_EPSILON &&
-		abs(lhs.y - rhs.y) < FLT_EPSILON)
+	if (abs(lhs.x - rhs.x) < EPSILON &&
+		abs(lhs.y - rhs.y) < EPSILON)
 		return true;
 	
 	return false;
 }
 
-vec2 operator*(vec2 &lhs, const float &rhs) 
+vec2 operator*(const vec2 &lhs, float &rhs) 
 {
 	return{ lhs.x * rhs, lhs.y * rhs};
 }
 
-vec2 operator*(const float &lhs, vec2 &rhs) 
+vec2 operator*(float &lhs, const vec2 &rhs) 
 {
 	return{ lhs * rhs.x, lhs * rhs.y };
 }
 
-vec2 operator*=(vec2 &lhs, const float &rhs)
+vec2 operator*=(vec2 &lhs, float &rhs)
 {
 	lhs = lhs * rhs;
 	return lhs;
@@ -73,8 +73,8 @@ vec2 operator-(vec2 & rhs)
 
 bool operator!=(const vec2 & lhs, const vec2 & rhs)
 {
-	if (abs(lhs.x - rhs.x) > FLT_EPSILON &&
-		abs(lhs.y - rhs.y) > FLT_EPSILON)
+	if (abs(lhs.x - rhs.x) > EPSILON &&
+		abs(lhs.y - rhs.y) > EPSILON)
 		return true;
 
 	return false;

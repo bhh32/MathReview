@@ -1,6 +1,6 @@
 #include "vec3.h"
 #include <cmath>
-#include <cfloat>
+#include "mathutils.h"
 
 vec3 operator+(const vec3 &lhs, const vec3 &rhs)
 {
@@ -32,9 +32,9 @@ bool operator==(const vec3 &lhs, const vec3 &rhs)
 	// floating-point math is weird! check this out!
 	// http://floating-point-gui.de/errors/comparison/
 
-	if (abs(lhs.x - rhs.x) < FLT_EPSILON &&
-		abs(lhs.y - rhs.y) < FLT_EPSILON &&
-		abs(lhs.z - rhs.z) < FLT_EPSILON)
+	if (abs(lhs.x - rhs.x) < EPSILON &&
+		abs(lhs.y - rhs.y) < EPSILON &&
+		abs(lhs.z - rhs.z) < EPSILON)
 		return true;
 
 	return false;
@@ -74,9 +74,9 @@ vec3 operator-(vec3 &rhs)
 
 bool operator!=(const vec3 &lhs, const vec3 &rhs)
 {
-	if (abs(lhs.x - rhs.x) > FLT_EPSILON &&
-		abs(lhs.y - rhs.y) > FLT_EPSILON &&
-		abs(lhs.z - rhs.z) > FLT_EPSILON)
+	if (abs(lhs.x - rhs.x) > EPSILON &&
+		abs(lhs.y - rhs.y) > EPSILON &&
+		abs(lhs.z - rhs.z) > EPSILON)
 		return true;
 
 	return false;
