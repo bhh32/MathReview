@@ -4,7 +4,7 @@
 
 Camera::Camera()
 {
-	cameraTransform.position = vec2{ 0, 0 };
+	cameraTransform.position = vec2{ 400, 300 };
 	cameraTransform.globalPosition = cameraTransform.position;
 
 	cameraTransform.demension = vec2{ 1, 1 };
@@ -28,4 +28,20 @@ void Camera::CameraUpdate()
 
 void Camera::CameraDraw()
 {
+	// Debug Draw
+	DebugDraw(cameraTransform.GetGlobalTransform(), 40);
+}
+
+void Camera::DebugDraw(const mat3 &t, float drawing_scale)
+{
+	// Origin Position
+	vec2 pos = t[2].xy;
+
+	vec2 rightEP = pos + t[0].xy * drawing_scale;
+	vec2 upEP = pos + t[1].xy * drawing_scale;
+
+	sfw::drawLine(pos.x, pos.y, rightEP.x, rightEP.y, RED);
+	sfw::drawLine(pos.x, pos.y, upEP.x, upEP.y, GREEN);
+
+	sfw::drawCircle(pos.x, pos.y, drawing_scale / 4);
 }

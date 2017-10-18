@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Transform.h"
-#include "vec2.h"
 
 class Player
 {
@@ -10,5 +9,8 @@ public:
 
 	Transform playerTransform;
 	unsigned int playerSprite;
+
+	void Draw();
+	void DebugDraw(const mat3 &t, float drawing_scale);
 	
 };

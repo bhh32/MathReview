@@ -14,4 +14,7 @@ public:
 
 	void CameraUpdate();
 	void CameraDraw();
+
+private:
+	void DebugDraw(const mat3 &t, float drawing_scale);
 };
