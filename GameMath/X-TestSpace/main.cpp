@@ -389,6 +389,8 @@ int main()
 	myTransform.position = vec2{ 300, 400 };
 	myTransform.demension = vec2{ 1, 1 };
 
+
+
 	while (sfw::stepContext()) 
 	{
 		float time = sfw::getTime();
@@ -399,7 +401,20 @@ int main()
 		myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
 
 		DrawMatrix(myTransform.GetLocalTransform(), 40);
+
+		if (sfw::getKey('A'))
+		{
+			myTransform.position.x -= 50.f * sfw::getDeltaTime();
+		}
 		
+		if (sfw::getKey('D'))
+		{
+			myTransform.position.x += 50.f * sfw::getDeltaTime();
+		}
+
+		if (sfw::getKey(NULL))
+			myTransform.position.x += 0.f;
+			
 	};
 
 	return 0;
