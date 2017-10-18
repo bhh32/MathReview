@@ -6,13 +6,17 @@
 class Transform
 {
 public:
+	vec2 globalPosition;
 	vec2 position;
 	vec2 demension;
 	float angle;
+	Transform *e_parent;
+
 
 	Transform();
 
-	mat3 GetLocalTransform();
+	mat3 GetLocalTransform() const;
+	mat3 GetGlobalTransform() const;
 };
 
 // Used for debugging

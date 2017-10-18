@@ -385,35 +385,44 @@ int main()
 
 	sfw::initContext();
 
+
+
 	Transform myTransform;
 	myTransform.position = vec2{ 300, 400 };
 	myTransform.demension = vec2{ 1, 1 };
 
-
+	Transform myBaby;
+	myBaby.position = vec2{ 10, 10 };
+	myBaby.demension = vec2{ 1, 1 };
+	myBaby.e_parent = &myTransform;
 
 	while (sfw::stepContext()) 
 	{
-		float time = sfw::getTime();
-		// Rotate you object around clockwise
-		myTransform.angle += -200 * sfw::getDeltaTime();
-
-		// Scale the object
-		myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
-
-		DrawMatrix(myTransform.GetLocalTransform(), 40);
-
+		//float time = sfw::getTime();
+		//// Rotate you object around clockwise
+		//myTransform.angle += -200 * sfw::getDeltaTime();
 		if (sfw::getKey('A'))
 		{
-			myTransform.position.x -= 50.f * sfw::getDeltaTime();
-		}
-		
-		if (sfw::getKey('D'))
-		{
-			myTransform.position.x += 50.f * sfw::getDeltaTime();
+			myBaby.position.x -= 50.f * sfw::getDeltaTime();
 		}
 
-		if (sfw::getKey(NULL))
-			myTransform.position.x += 0.f;
+		if (sfw::getKey('D'))
+		{
+			myBaby.position.x += 50.f * sfw::getDeltaTime();
+		}
+
+		if (sfw::getKey('W'))
+			myBaby.position.y += 50.f * sfw::getDeltaTime();
+
+		if (sfw::getKey('S'))
+			myBaby.position.y -= 50.f * sfw::getDeltaTime();
+		
+		// Scale the object
+		//myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
+		myBaby.demension = vec2{ 5, 5 };
+
+		DrawMatrix(myTransform.GetGlobalTransform(), 40);
+		DrawMatrix(myBaby.GetGlobalTransform(), 30);
 			
 	};
 

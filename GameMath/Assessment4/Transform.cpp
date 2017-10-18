@@ -1,15 +1,31 @@
 #include "Transform.h"
 #include "sfwdraw.h"
+
 Transform::Transform()
 {
 	position = vec2{ 0, 0 };
+	globalPosition = position;
+	
 	demension = vec2{ 0,0 };
 	angle = 0;
+	e_parent = nullptr;
 }
 
-mat3 Transform::GetLocalTransform()
+mat3 Transform::GetLocalTransform() const
 {
 	return Translate(position) * Scale(demension) * Rotation(angle);
+}
+
+mat3 Transform::GetGlobalTransform() const
+{
+	if (e_parent != nullptr)
+	{
+		return e_parent->GetGlobalTransform() * GetLocalTransform();
+	}
+	else
+	{
+		return GetLocalTransform();
+	}
 }
 
 void DrawMatrix(const mat3 &t, float drawing_scale)
