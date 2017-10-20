@@ -6,7 +6,6 @@
 class Transform
 {
 public:
-	vec2 globalPosition;
 	vec2 position;
 	vec2 demension;
 	float angle;
@@ -17,7 +16,8 @@ public:
 
 	mat3 GetLocalTransform() const;
 	mat3 GetGlobalTransform() const;
+
+	// Used for debugging
+	virtual void DrawMatrix(const mat3 &t, float drawing_scale);
 };
 
-// Used for debugging
-void DrawMatrix(const mat3 &t, float drawing_scale);

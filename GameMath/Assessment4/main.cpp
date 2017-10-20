@@ -1,24 +1,31 @@
+#include <iostream>
 #include "sfwdraw.h"
-#include "Camera.h"
-#include "Player.h"
+#include "Level.h"
+#include "Piece.h"
 
 
 int main()
 {
+
 	sfw::initContext();
 
-	Camera mainCamera;
-	Player player;
+	Level level1;
+	
 
-	player.playerTransform.e_parent = &mainCamera.cameraTransform;
+	Piece player;
+	player.InitPiece();
 
-	player.playerTransform.position = vec2{ 400, 300 };
-	player.playerTransform.demension = vec2{ 20, 40 };
+	level1.InitLevel(player);
 
 	while (sfw::stepContext())
 	{
-		mainCamera.CameraDraw();
-		player.Draw();
+		// Update Stuff
+		level1.Update();
+
+		// Draw Stuff
+		level1.Draw();
+
+		// Spawn Stuff
 	}
 
 	return 0;

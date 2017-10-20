@@ -4,7 +4,6 @@
 Transform::Transform()
 {
 	position = vec2{ 0, 0 };
-	globalPosition = position;
 	
 	demension = vec2{ 0,0 };
 	angle = 0;
@@ -28,7 +27,7 @@ mat3 Transform::GetGlobalTransform() const
 	}
 }
 
-void DrawMatrix(const mat3 &t, float drawing_scale)
+void Transform::DrawMatrix(const mat3 &t, float drawing_scale)
 {
 	// Base position in matrix
 	vec2 pos = t[2].xy;
