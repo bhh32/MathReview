@@ -67,7 +67,10 @@ void Piece::Update()
 	else
 		pieceTransform.position.y = groundHeight;
 
-	if (pieceTransform.position.x <= 536.f)
+
+	if (pieceTransform.position.x < 246.f)
+		groundHeight = 35.f;
+	else if (pieceTransform.position.x >= 523.f && pieceTransform.position.x <= 536.f)
 		groundHeight = 18.f;
 	else if (pieceTransform.position.x > 536.f && pieceTransform.position.x < 563.f)
 		groundHeight = -200.f;

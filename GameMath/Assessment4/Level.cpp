@@ -29,6 +29,7 @@ void Level::Draw()
 	sfw::drawTexture(sky, 400, 300, 800, 700);
 	sfw::drawTexture(ground, 400, 0, 256, 18);
 	sfw::drawTexture(ground, 690, 10, 256, 25);
+	sfw::drawTexture(ground, 128, 15, 256, 25);
 
 	// Draw The player
 	player.Draw();
