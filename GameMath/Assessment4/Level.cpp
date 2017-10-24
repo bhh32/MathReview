@@ -9,7 +9,7 @@ Level::Level()
 	ground = sfw::loadTextureMap("res/quickGround.png");
 	sky = sfw::loadTextureMap("res/sky.png");
 	coin = sfw::loadTextureMap("res/coin.png");
-	string = sfw::loadTextureMap("res/fontmap_360.png");
+	string = sfw::loadTextureMap("res/fontmap_360.png", 16, 16);
 	words = "Good Job!";
 
 	firework[0] = sfw::loadTextureMap("res/firework_red0.png");
