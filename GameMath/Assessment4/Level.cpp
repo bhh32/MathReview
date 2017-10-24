@@ -1,17 +1,17 @@
 #include "Level.h"
 #include "sfwdraw.h"
-#include <iostream>
 #include <random>
 #include <ctime>
 
 Level::Level()
 {
+	// Load all of the level textures on Init
 	ground = sfw::loadTextureMap("res/quickGround.png");
 	sky = sfw::loadTextureMap("res/sky.png");
 	coin = sfw::loadTextureMap("res/coin.png");
 	string = sfw::loadTextureMap("res/fontmap_360.png", 16, 16);
-	words = "Good Job!";
 
+	// Load all of the end animation textures on Init
 	firework[0] = sfw::loadTextureMap("res/firework_red0.png");
 	firework[1] = sfw::loadTextureMap("res/firework_red1.png");
 	firework[2] = sfw::loadTextureMap("res/firework_red2.png");
@@ -21,6 +21,7 @@ Level::Level()
 	firework[6] = sfw::loadTextureMap("res/firework_red6.png");
 	firework[7] = sfw::loadTextureMap("res/firework_red7.png");
 
+	// Sets the flag for the coin collection to false
 	isCollected = false;
 	
 	// Platform Transform Setups         Position       Demension(Scale) Rotation Angle
@@ -55,28 +56,32 @@ Level::Level()
 	platforms[6].SetBounds(platforms[6].transform.position.x - (platforms[6].transform.demension.x / 2), platforms[6].transform.position.x + (platforms[6].transform.demension.x / 2));
 	platforms[7].SetBounds(platforms[7].transform.position.x - (platforms[7].transform.demension.x / 2), platforms[7].transform.position.x + (platforms[7].transform.demension.x / 2));
 
+	// Set the Transform object for the coin
 	coinTrans = Transform(vec2{ 450, 240 }, vec2{ 32, 32 }, 0.f);
 
-	endAnimSpriteCount = 3;
+	// Seed the time on the inital level load for the end animation
 	srand(time(nullptr));
 }
 
 void Level::InitLevel()
 {
+	// Set the intial groundHeight
 	groundHeight = platforms[1].GetGroundHeight();
+
+	// Initiate the player
 	player.InitPiece();
+
+	// Set the player's initial groundHeight
 	player.SetGroundHeight(groundHeight);
 }
 
 void Level::Update()
-{	
-	std::cout << "(" << coinTrans.position.x << ", " << coinTrans.position.y << ")" << std::endl;
-
+{
 	// Check to see if the player's groundHeight is the same as the actual groundHeight
 	if(player.GetGroundHeight() != groundHeight)
 		player.SetGroundHeight(groundHeight);
 
-	// Check for which platform the player is on or most likely to land on
+	// Check for which platform the player is on or most likely to land on using groundHeight and the platform bounds
 	for (int i = 0; i < 10; ++i)
 	{
 		if (player.pieceTransform.position.y > platforms[i].GetGroundHeight() && player.pieceTransform.position.x >= platforms[i].GetBounds().x && player.pieceTransform.position.x <= platforms[i].GetBounds().y)
@@ -85,17 +90,16 @@ void Level::Update()
 
 	// Update the player	
 	player.Update();
+
+	// Update the coin
 	if (!isCollected)
 	{
+		// Rotate the coin
 		coinTrans.angle += 90.f * sfw::getDeltaTime();
 		
 		// Collect the coin
 		if (player.pieceTransform.position.y >= coinTrans.position.y - (coinTrans.demension.y / 2) && player.pieceTransform.position.x >= coinTrans.position.x - (coinTrans.demension.x / 2) && player.pieceTransform.position.x <= coinTrans.position.x + (coinTrans.demension.x / 2))
 				isCollected = true;
-	}
-	else
-	{
-
 	}
 }
 
@@ -111,28 +115,24 @@ void Level::Draw()
 	drawObject.DrawTexture(ground, platforms[1].transform.GetGlobalTransform());
 	drawObject.DrawTexture(ground, platforms[2].transform.GetGlobalTransform());
 	drawObject.DrawTexture(ground, platforms[3].transform.GetGlobalTransform());
+	
+	// Check to know whether to draw the end animations or the coin
 	if (!isCollected)
 	{
 		drawObject.DrawTexture(coin, coinTrans.GetGlobalTransform());
 	}
 	else
 	{
+		// When The coin is collected play the end animation
 		int randoX = rand() % 700 + 1;
 		int randoY = rand() % 500 + 1;
 
-		if (randoX < 100)
-		{
-			randoX = rand() % 700 + 1;
-		}
+		// Draw the good job string
+		sfw::drawString(string, "Good Job!", 200, 300, 50, 50);
 
-		if (randoY < 300)
-		{
-			randoY = rand() % 500 + 1;
-		}
-		sfw::drawString(string, words.c_str(), 200, 300, 50, 50);
+		// Draw the end game animation
 		for(int i = 0; i < 8; ++i)
 			sfw::drawTexture(firework[i], randoX, randoY, 40, 40);
-
 	}
 
 	// Draw The player

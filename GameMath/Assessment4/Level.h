@@ -3,7 +3,6 @@
 #include "Transform.h"
 #include "Platform.h"
 #include "Piece.h"
-#include <string>
 
 class Level
 {
@@ -14,11 +13,8 @@ public:
 	Platform platforms[20];
 	Piece player;
 
-	std::string words;
 	float groundHeight;
 	float coinPos;
-	int endAnimSpriteCount;
-	float fireworkDelay;
 
 	Level();
 	void InitLevel();

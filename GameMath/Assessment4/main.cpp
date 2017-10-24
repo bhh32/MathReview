@@ -1,7 +1,5 @@
-#include <iostream>
 #include "sfwdraw.h"
 #include "Level.h"
-#include "Piece.h"
 
 
 int main()
@@ -9,6 +7,7 @@ int main()
 
 	sfw::initContext();
 
+	// Create the level object and Init the level
 	Level level1;
 	level1.InitLevel();
 
@@ -19,9 +18,9 @@ int main()
 
 		// Draw Stuff
 		level1.Draw();
-
-		// Spawn Stuff
 	}
+
+	sfw::termContext();
 
 	return 0;
 }

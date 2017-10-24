@@ -20,6 +20,8 @@ public:
 
 	// Used for debugging
 	virtual void DrawMatrix(const mat3 &t, float drawing_scale);
+
+	// Draws Texture from GlobalTransform()
 	void DrawTexture(unsigned sprite, const mat3 &t);
 };
 
