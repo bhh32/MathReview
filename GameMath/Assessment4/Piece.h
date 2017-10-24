@@ -5,6 +5,7 @@
 class Piece
 {
 public:
+	Transform pieceTransform;
 
 	Piece() {};
 	virtual void InitPiece();
@@ -15,10 +16,14 @@ public:
 	
 protected:
 	
-	Transform pieceTransform;
+	
+	vec2 forward;
+	vec2 up;
+	vec2 speed;
+	vec2 gravity;
 	unsigned int pieceBlock;
 	bool isJumping;
-	float gravity;
+	
 	float jumpDelay;
 	int jumpHeight;
 	bool isMaxHeight;
