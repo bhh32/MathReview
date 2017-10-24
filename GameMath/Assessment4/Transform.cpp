@@ -1,12 +1,12 @@
 #include "Transform.h"
 #include "sfwdraw.h"
 
-Transform::Transform()
+Transform::Transform(vec2 position, vec2 demension, float angle)
 {
-	position = vec2{ 0, 0 };
+	this->position = position;
 	
-	demension = vec2{ 0,0 };
-	angle = 0;
+	this->demension = demension;
+	this->angle = angle;
 	e_parent = nullptr;
 }
 

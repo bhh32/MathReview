@@ -12,7 +12,9 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
-	int groundHeight;
+	void SetGroundHeight(float groundHeight);
+	float GetGroundHeight();
+	
 	
 protected:
 	
@@ -23,8 +25,9 @@ protected:
 	vec2 gravity;
 	unsigned int pieceBlock;
 	bool isJumping;
-	
+	float groundHeight;
 	float jumpDelay;
 	int jumpHeight;
 	bool isMaxHeight;
+	float pieceBottom;
 };

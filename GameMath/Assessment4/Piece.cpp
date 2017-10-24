@@ -5,29 +5,34 @@
 
 void Piece::InitPiece()
 {
-	pieceTransform.position = vec2{ 400, -275 };
+	
 	pieceTransform.demension = vec2{ 18, 18 };
 	pieceTransform.angle = 0;
 	pieceBlock = sfw::loadTextureMap("res/blueBlock.png");
+	groundHeight = 18.f;
+	
 
-	forward = pieceTransform.position.Normal();
-	up = vec2{ 0.f, 50.f * forward.y };
-	speed = vec2{ 5.f * forward.x, 0.f };
+	
 	gravity = vec2{ 0.f ,-9.8f };
 	isJumping = false;
 	isMaxHeight = false;
 	
-	groundHeight = 18;
+	
+	pieceTransform.position = vec2{ 400, 100 };
+	
+	forward = pieceTransform.position.Normal();
+	up = vec2{ 0.f, 75.f * forward.y };
+	speed = vec2{ 5.f * forward.x, 0.f };
 	jumpDelay = 10.f;
 	
 }
 
 void Piece::Update()
 {
-	// Debug for player x position
+	// Debug for player xy position
 	std::cout << "(" << pieceTransform.position.x << ", " << pieceTransform.position.y << ")" << std::endl;
-
-	jumpHeight = groundHeight + 80;
+	pieceBottom = pieceTransform.position.y - (pieceTransform.demension.y / 2);
+	jumpHeight = groundHeight + 70;
 
 	if (!isMaxHeight)
 	{
@@ -35,7 +40,7 @@ void Piece::Update()
 		{
 			if (pieceTransform.position.y <= jumpHeight)
 			{				
-				pieceTransform.position -= up;
+				pieceTransform.position += up;
 				isJumping = true;
 			}
 
@@ -65,16 +70,26 @@ void Piece::Update()
 	if (sfw::getKey('A'))
 		pieceTransform.position -= speed;
 
-	if (pieceTransform.position.y > groundHeight)
+	if (pieceTransform.position.y - 9 > groundHeight)
 		pieceTransform.position += gravity;
 	else
-		pieceTransform.position.y = groundHeight;
+		pieceTransform.position.y = groundHeight + 9.f;
 
 }
 
 void Piece::Draw()
 {
 	sfw::drawTexture(pieceBlock, pieceTransform.position.x, pieceTransform.position.y, 18, 18, pieceTransform.angle);
+}
+
+void Piece::SetGroundHeight(float groundHeight)
+{
+	this->groundHeight = groundHeight;
+}
+
+float Piece::GetGroundHeight()
+{
+	return groundHeight;
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Transform.h"
+#include "Platform.h"
 #include "Piece.h"
 
 class Level
@@ -15,12 +16,12 @@ public:
 	Transform platform4;
 	Transform platform5;
 
-	Transform platforms[20];
+	Platform platforms[20];
 	Piece player;
 	mat3 cam;
-
+	float groundHeight;
 	Level();
-	void InitLevel(Piece &player);
+	void InitLevel();
 	void Update();
 	void Draw();
 

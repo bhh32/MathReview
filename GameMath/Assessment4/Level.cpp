@@ -7,96 +7,81 @@ Level::Level()
 	ground = sfw::loadTextureMap("res/quickGround.png");
 	sky = sfw::loadTextureMap("res/sky.png");
 	
-
-
-	/* Platform Identities:
-	                        platform1 = center 
-							platform2 = bottom right
-							platform3 = bottom left
-							platform4 = second level right
-	*/
 	
-	// Platform Positions
-	//platforms[0] = Transform{ vec2{ 400, 0 }, vec2{256, 18 } };
-	platform2.position = vec2{ 690, 10 };
-	platform3.position = vec2{ 128, 15 };
-	platform4.position = vec2{ 693, 40 };
-	platform5.position = vec2{ 575, 45 };
+	// Platform Transform Setups         Position       Demension(Scale) Rotation Angle
+	platforms[0].transform = Transform(vec2{ 128, 15 }, vec2{ 256, 25 }, 0.f);
+	platforms[1].transform = Transform(vec2{ 400, 0 }, vec2{ 256, 18 }, 0.f);
+	platforms[2].transform = Transform(vec2{ 690, 10 }, vec2{ 256, 25 }, 0.f);
+	platforms[3].transform = Transform(vec2{ 693, 40 }, vec2{ 128, 35 }, 0.f);
+	platforms[4].transform = Transform(vec2{ 575, 45 }, vec2{ 256, 115 }, 0.f);
+	platforms[5].transform = Transform(vec2{ 295, 45 }, vec2{ 256, 115 }, 0.f);
+	platforms[6].transform = Transform(vec2{ 310, 45 }, vec2{ 128, 200 }, 0.f);
+	platforms[7].transform = Transform(vec2{ 450, 45 }, vec2{ 256, 315 }, 0.f);
 
-	// Platform Scales
-	platform1.demension = vec2{ 256, 18 };
-	platform2.demension = vec2{ 256, 25 };
-	platform3.demension = vec2{ 256, 25 };
-	platform4.demension = vec2{ 128, 35 };
-	platform5.demension = vec2{ 256, 115 };
 
+	// Set the platforms ground height
+	platforms[0].SetGroundHeight(platforms[0].transform.position.y + (platforms[0].transform.demension.y / 2));
+	platforms[1].SetGroundHeight(platforms[1].transform.position.y + (platforms[1].transform.demension.y / 2));
+	platforms[2].SetGroundHeight(platforms[2].transform.position.y + (platforms[2].transform.demension.y / 2));
+	platforms[3].SetGroundHeight(platforms[3].transform.position.y + (platforms[3].transform.demension.y / 2));
+	platforms[4].SetGroundHeight(platforms[4].transform.position.y + (platforms[4].transform.demension.y / 2));
+	platforms[5].SetGroundHeight(platforms[5].transform.position.y + (platforms[5].transform.demension.y / 2));
+	platforms[6].SetGroundHeight(platforms[6].transform.position.y + (platforms[6].transform.demension.y / 2));
+	platforms[7].SetGroundHeight(platforms[7].transform.position.y + (platforms[7].transform.demension.y / 2));
 	
-	
+
+	// Set the left and right bounds of the platforms
+	platforms[0].SetBounds(platforms[0].transform.position.x - (platforms[0].transform.demension.x / 2), platforms[0].transform.position.x + (platforms[0].transform.demension.x / 2));
+	platforms[1].SetBounds(platforms[1].transform.position.x - (platforms[1].transform.demension.x / 2), platforms[1].transform.position.x + (platforms[1].transform.demension.x / 2));
+	platforms[2].SetBounds(platforms[2].transform.position.x - (platforms[2].transform.demension.x / 2), platforms[2].transform.position.x + (platforms[2].transform.demension.x / 2));
+	platforms[3].SetBounds(platforms[3].transform.position.x - (platforms[3].transform.demension.x / 2), platforms[3].transform.position.x + (platforms[3].transform.demension.x / 2));
+	platforms[4].SetBounds(platforms[4].transform.position.x - (platforms[4].transform.demension.x / 2), platforms[4].transform.position.x + (platforms[4].transform.demension.x / 2));
+	platforms[5].SetBounds(platforms[5].transform.position.x - (platforms[5].transform.demension.x / 2), platforms[5].transform.position.x + (platforms[5].transform.demension.x / 2));
+	platforms[6].SetBounds(platforms[6].transform.position.x - (platforms[6].transform.demension.x / 2), platforms[6].transform.position.x + (platforms[6].transform.demension.x / 2));
+	platforms[7].SetBounds(platforms[7].transform.position.x - (platforms[7].transform.demension.x / 2), platforms[7].transform.position.x + (platforms[7].transform.demension.x / 2));
 }
 
-void Level::InitLevel(Piece &player)
+void Level::InitLevel()
 {
-	this->player = player;
+	groundHeight = platforms[1].GetGroundHeight();
+	player.InitPiece();
+	player.SetGroundHeight(groundHeight);
 }
 
 void Level::Update()
 {
 	// Update the ground height
-	std::cout << "groundHeight: " << player.groundHeight << std::endl;
-	float platform4Left = (platform4.position.x - (platform4.demension.x / 2));
-	float platform4Right = (platform4.position.x + (platform4.demension.x / 2) + 9);
+	std::cout << "groundHeight: " << groundHeight << std::endl;
 	
-
-	if (player.pieceTransform.position.x + 9 < platform3.position.x + (platform3.demension.x / 2) && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2)) // Left Bottom Corner Platform
-		player.groundHeight = platform3.position.y + 20.f;
-	else if (player.pieceTransform.position.x + 9 >= platform3.position.x + (platform3.demension.x / 2) && player.pieceTransform.position.x - 9 < platform1.position.x - (platform1.demension.x / 2) && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2))
-		player.groundHeight = -200.f; // Hole between left and center platforms
-	else if (player.pieceTransform.position.x + 9 >= platform1.position.x - (platform1.demension.x / 2) && player.pieceTransform.position.x + 9 <= platform1.position.x + (platform1.demension.x / 2) && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2)) // Center Bottom Platform
-		player.groundHeight = platform1.position.y + 18.f;
-	else if (player.pieceTransform.position.x + 9 >= platform1.position.x + (platform1.demension.x / 2) && player.pieceTransform.position.x - 9 <= platform2.position.x - (platform2.demension.x / 2) && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2)) // Hole between bottom center and bottom right platforms
-		player.groundHeight = -200.f;
-	else if (player.pieceTransform.position.x + 9 >= platform2.position.x - (platform2.demension.x / 2) && player.pieceTransform.position.x - 9 <= platform4.position.x - (platform4.demension.x / 2) && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2)) // Left part of bottom right platform and 2nd level right platform
-	{
-		player.groundHeight = platform3.position.y + 17.f;
-
-		// Platform 4 Left Side Wall Collision
-		if (player.pieceTransform.position.x + 9 >= platform4Left && player.pieceTransform.position.y < (platform4.position.y + platform4.demension.y / 2))
-			player.pieceTransform.position.x = platform4Left - 9;
-	}
-	else if (player.pieceTransform.position.x - 9 >= platform4Left && player.pieceTransform.position.x + 9 <= platform4Right && player.pieceTransform.position.y < platform5.position.y + (platform5.demension.y / 2)) // 2nd level right platform
-	{
-		player.groundHeight = platform4.position.y + 25.f;
-
-		
-	}
-	else if (player.pieceTransform.position.x - 9 > platform4Right) // Right side of bottom right platform
-	{
-		player.groundHeight = platform3.position.y + 17.f;
-
-		// Platform 4 Right Side Wall Collision
-		if (player.pieceTransform.position.x - 9 <= platform4Right + 2 && player.pieceTransform.position.y < (platform4.position.y - platform4.demension.y / 2))
-			player.pieceTransform.position.x = platform4Right;	
-	}
 	
-	if (player.pieceTransform.position.y - 9 >= platform5.position.y + (platform5.demension.y / 2))
-		player.groundHeight = platform5.position.y + (platform5.demension.y / 2);
+	if(player.GetGroundHeight() != groundHeight)
+		player.SetGroundHeight(groundHeight);
+
+	// Check for which platform the player is on or most likely to land on
+	for (int i = 0; i < 10; ++i)
+	{
+		if (player.pieceTransform.position.y > platforms[i].GetGroundHeight() && player.pieceTransform.position.x >= platforms[i].GetBounds().x && player.pieceTransform.position.x <= platforms[i].GetBounds().y)
+			groundHeight = platforms[i].GetGroundHeight();
+	}
 
 	// Update the player
+	
 	player.Update();
+	
 }
 
 void Level::Draw()
 {
-	
-	
-
 	// Draw the background
-	sfw::drawTexture(sky, 400, 300, 800, 700);	
-	drawObject.DrawTexture(ground, platform5.GetGlobalTransform());
-	drawObject.DrawTexture(ground, platform1.GetGlobalTransform());
-	drawObject.DrawTexture(ground, platform2.GetGlobalTransform());
-	drawObject.DrawTexture(ground, platform3.GetGlobalTransform());
-	drawObject.DrawTexture(ground, platform4.GetGlobalTransform());
+	sfw::drawTexture(sky, 400, 300, 800, 700);
+	drawObject.DrawTexture(ground, platforms[7].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[4].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[6].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[5].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[0].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[1].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[2].transform.GetGlobalTransform());
+	drawObject.DrawTexture(ground, platforms[3].transform.GetGlobalTransform());
 	
 
 	// Draw The player

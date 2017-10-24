@@ -12,7 +12,8 @@ public:
 	Transform *e_parent;
 
 
-	Transform();
+	Transform() {};
+	Transform(vec2 position, vec2 demension, float angle);
 
 	mat3 GetLocalTransform() const;
 	mat3 GetGlobalTransform() const;

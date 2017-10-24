@@ -10,12 +10,7 @@ int main()
 	sfw::initContext();
 
 	Level level1;
-	
-
-	Piece player;
-	player.InitPiece();
-
-	level1.InitLevel(player);
+	level1.InitLevel();
 
 	while (sfw::stepContext())
 	{
