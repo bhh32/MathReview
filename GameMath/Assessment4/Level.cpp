@@ -1,12 +1,27 @@
 #include "Level.h"
 #include "sfwdraw.h"
 #include <iostream>
+#include <random>
+#include <ctime>
 
 Level::Level()
 {
 	ground = sfw::loadTextureMap("res/quickGround.png");
 	sky = sfw::loadTextureMap("res/sky.png");
-	
+	coin = sfw::loadTextureMap("res/coin.png");
+	string = sfw::loadTextureMap("res/fontmap_360.png");
+	words = "Good Job!";
+
+	firework[0] = sfw::loadTextureMap("res/firework_red0.png");
+	firework[1] = sfw::loadTextureMap("res/firework_red1.png");
+	firework[2] = sfw::loadTextureMap("res/firework_red2.png");
+	firework[3] = sfw::loadTextureMap("res/firework_red3.png");
+	firework[4] = sfw::loadTextureMap("res/firework_red4.png");
+	firework[5] = sfw::loadTextureMap("res/firework_red5.png");
+	firework[6] = sfw::loadTextureMap("res/firework_red6.png");
+	firework[7] = sfw::loadTextureMap("res/firework_red7.png");
+
+	isCollected = false;
 	
 	// Platform Transform Setups         Position       Demension(Scale) Rotation Angle
 	platforms[0].transform = Transform(vec2{ 128, 15 }, vec2{ 256, 25 }, 0.f);
@@ -39,6 +54,11 @@ Level::Level()
 	platforms[5].SetBounds(platforms[5].transform.position.x - (platforms[5].transform.demension.x / 2), platforms[5].transform.position.x + (platforms[5].transform.demension.x / 2));
 	platforms[6].SetBounds(platforms[6].transform.position.x - (platforms[6].transform.demension.x / 2), platforms[6].transform.position.x + (platforms[6].transform.demension.x / 2));
 	platforms[7].SetBounds(platforms[7].transform.position.x - (platforms[7].transform.demension.x / 2), platforms[7].transform.position.x + (platforms[7].transform.demension.x / 2));
+
+	coinTrans = Transform(vec2{ 450, 240 }, vec2{ 32, 32 }, 0.f);
+
+	endAnimSpriteCount = 3;
+	srand(time(nullptr));
 }
 
 void Level::InitLevel()
@@ -49,11 +69,10 @@ void Level::InitLevel()
 }
 
 void Level::Update()
-{
-	// Update the ground height
-	std::cout << "groundHeight: " << groundHeight << std::endl;
-	
-	
+{	
+	std::cout << "(" << coinTrans.position.x << ", " << coinTrans.position.y << ")" << std::endl;
+
+	// Check to see if the player's groundHeight is the same as the actual groundHeight
 	if(player.GetGroundHeight() != groundHeight)
 		player.SetGroundHeight(groundHeight);
 
@@ -64,10 +83,20 @@ void Level::Update()
 			groundHeight = platforms[i].GetGroundHeight();
 	}
 
-	// Update the player
-	
+	// Update the player	
 	player.Update();
-	
+	if (!isCollected)
+	{
+		coinTrans.angle += 90.f * sfw::getDeltaTime();
+		
+		// Collect the coin
+		if (player.pieceTransform.position.y >= coinTrans.position.y - (coinTrans.demension.y / 2) && player.pieceTransform.position.x >= coinTrans.position.x - (coinTrans.demension.x / 2) && player.pieceTransform.position.x <= coinTrans.position.x + (coinTrans.demension.x / 2))
+				isCollected = true;
+	}
+	else
+	{
+
+	}
 }
 
 void Level::Draw()
@@ -82,7 +111,29 @@ void Level::Draw()
 	drawObject.DrawTexture(ground, platforms[1].transform.GetGlobalTransform());
 	drawObject.DrawTexture(ground, platforms[2].transform.GetGlobalTransform());
 	drawObject.DrawTexture(ground, platforms[3].transform.GetGlobalTransform());
-	
+	if (!isCollected)
+	{
+		drawObject.DrawTexture(coin, coinTrans.GetGlobalTransform());
+	}
+	else
+	{
+		int randoX = rand() % 700 + 1;
+		int randoY = rand() % 500 + 1;
+
+		if (randoX < 100)
+		{
+			randoX = rand() % 700 + 1;
+		}
+
+		if (randoY < 300)
+		{
+			randoY = rand() % 500 + 1;
+		}
+		sfw::drawString(string, words.c_str(), 200, 300, 50, 50);
+		for(int i = 0; i < 8; ++i)
+			sfw::drawTexture(firework[i], randoX, randoY, 40, 40);
+
+	}
 
 	// Draw The player
 	player.Draw();

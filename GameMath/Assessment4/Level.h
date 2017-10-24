@@ -3,30 +3,34 @@
 #include "Transform.h"
 #include "Platform.h"
 #include "Piece.h"
+#include <string>
 
 class Level
 {
 public:
 	Transform drawObject;
-	vec2 camTarget;
 	Transform skyTrans;
-	Transform platform1;
-	Transform platform2;
-	Transform platform3;
-	Transform platform4;
-	Transform platform5;
-
+	Transform coinTrans;
 	Platform platforms[20];
 	Piece player;
-	mat3 cam;
+
+	std::string words;
 	float groundHeight;
+	float coinPos;
+	int endAnimSpriteCount;
+	float fireworkDelay;
+
 	Level();
 	void InitLevel();
 	void Update();
 	void Draw();
 
 private:
-
 	unsigned int ground;
 	unsigned int sky;
+	unsigned int coin;
+	unsigned int string;
+	unsigned int firework[8];
+
+	bool isCollected;
 };
