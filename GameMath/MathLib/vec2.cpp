@@ -39,12 +39,12 @@ bool operator==(const vec2 & lhs, const vec2 & rhs)
 	return false;
 }
 
-vec2 operator*(const vec2 &lhs, float &rhs) 
+vec2 operator*(const vec2 &lhs, float rhs) 
 {
 	return{ lhs.x * rhs, lhs.y * rhs};
 }
 
-vec2 operator*(float &lhs, const vec2 &rhs) 
+vec2 operator*(float lhs, const vec2 &rhs) 
 {
 	return{ lhs * rhs.x, lhs * rhs.y };
 }

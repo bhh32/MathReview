@@ -47,10 +47,10 @@ vec2 operator-=(vec2 &lhs, const vec2 &rhs);
 bool operator==(const vec2 &lhs, const vec2 &rhs);
 
 // multiplies x and y by scalar to make a new vector
-vec2 operator*(const vec2 &lhs, float &rhs);
+vec2 operator*(const vec2 &lhs, float rhs);
 
 // multiplies scalar by x and y in vector to make a new vector
-vec2 operator*(float &lhs, const vec2 &rhs);
+vec2 operator*(float lhs, const vec2 &rhs);
 
 // multiplies vector x and y by scalar
 vec2 operator*=(vec2 &lhs, const float &rhs);

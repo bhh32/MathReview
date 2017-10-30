@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "sfwdraw.h"
 #include "Transform.h"
+#include "Rigidbody.h"
 
 using std::cout;
 using std::endl;
@@ -385,44 +386,69 @@ int main()
 
 	sfw::initContext();
 
+	/** Transform Tests **/
 
-
-	Transform myTransform;
+	/*Transform myTransform;
 	myTransform.position = vec2{ 300, 400 };
 	myTransform.demension = vec2{ 1, 1 };
 
 	Transform myBaby;
 	myBaby.position = vec2{ 10, 10 };
 	myBaby.demension = vec2{ 1, 1 };
-	myBaby.e_parent = &myTransform;
+	myBaby.e_parent = &myTransform;*/
+
+	/** Rigidbody tests **/
+
+	Transform transform;
+	Rigidbody rigidbody;
+	
+	transform.position = vec2{ 400, 300 };
 
 	while (sfw::stepContext()) 
 	{
+		/**  Transforms Tests **/
 		//float time = sfw::getTime();
 		//// Rotate you object around clockwise
 		//myTransform.angle += -200 * sfw::getDeltaTime();
-		if (sfw::getKey('A'))
+		//if (sfw::getKey('A'))
+		//{
+		//	myBaby.position.x -= 50.f * sfw::getDeltaTime();
+		//}
+
+		//if (sfw::getKey('D'))
+		//{
+		//	myBaby.position.x += 50.f * sfw::getDeltaTime();
+		//}
+
+		//if (sfw::getKey('W'))
+		//	myBaby.position.y += 50.f * sfw::getDeltaTime();
+
+		//if (sfw::getKey('S'))
+		//	myBaby.position.y -= 50.f * sfw::getDeltaTime();
+		//
+		//// Scale the object
+		////myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
+		//myBaby.demension = vec2{ 5, 5 };
+
+		//DrawMatrix(myTransform.GetGlobalTransform(), 40);
+		//DrawMatrix(myBaby.GetGlobalTransform(), 30);
+
+		/**Rigidbody tests **/
+		float dt = sfw::getDeltaTime();
+
+		//rigidbody.force += { 0, -25 }; // Gravity
+
+		if (sfw::getKey('W'))rigidbody.force += transform.GetGlobalTransform()[1].xy * 100.f;
+		if (sfw::getKey('A'))rigidbody.torque += 360;
+		if (sfw::getKey('D'))rigidbody.torque += -360;
+		if (sfw::getKey(' '))
 		{
-			myBaby.position.x -= 50.f * sfw::getDeltaTime();
+			rigidbody.force += -rigidbody.velocity * 20;
+			rigidbody.torque += -rigidbody.angularVelocity * 20;
 		}
 
-		if (sfw::getKey('D'))
-		{
-			myBaby.position.x += 50.f * sfw::getDeltaTime();
-		}
-
-		if (sfw::getKey('W'))
-			myBaby.position.y += 50.f * sfw::getDeltaTime();
-
-		if (sfw::getKey('S'))
-			myBaby.position.y -= 50.f * sfw::getDeltaTime();
-		
-		// Scale the object
-		//myTransform.demension = vec2{ sinf(time) + 2, sinf(time) + 2 };
-		myBaby.demension = vec2{ 5, 5 };
-
-		DrawMatrix(myTransform.GetGlobalTransform(), 40);
-		DrawMatrix(myBaby.GetGlobalTransform(), 30);
+		rigidbody.Integrate(transform, dt);
+		transform.DrawMatrix(transform.GetGlobalTransform(), 12);
 			
 	};
 
