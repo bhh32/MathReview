@@ -122,24 +122,28 @@ const float vec2::operator[](const int index) const
 	return v[index];
 }
 
-float vec2::Magnitude()
+float Magnitude(const vec2 vec)
 {
-	float length = abs(sqrt((x * x) + (y * y)));
+	float length = abs(sqrt((vec.x * vec.x) + (vec.y * vec.y)));
 
 	return length;
 }
 
-vec2 vec2::Normal()
+vec2 Normal(const vec2 &v)
 {
-	vec2 temp = { x / Magnitude(), y / Magnitude() };
+	vec2 temp = v;
+
+	float len = Magnitude(v);
+
+	temp /= len;
 	return temp;
 }
 
-vec2 &vec2::Normalize()
+vec2 &Normalize(vec2 &v)
 {
-	(*this) = Normal();
+	 v = Normal(v);
 	
-	return *this;
+	return v;
 }
 
 float DotProduct(const vec2 &lhs, const vec2 &rhs)

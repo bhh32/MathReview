@@ -18,14 +18,11 @@ union vec2
 	// Returns the element of the vector
 	const float operator[](const int index) const;
 
-	// Returns the magnitude of a vector
-	float Magnitude();
+	
 
-	// Returns the normalized vector w/o modifying original vector
-	vec2 Normal();
+	
 
-	// Returns the normalized vector (changes the vector to normalized vector)
-	vec2 &Normalize();
+	
 
 	
 	
@@ -74,6 +71,15 @@ bool operator>(const vec2 &lhs, const vec2 &rhs);
 bool operator<=(const vec2 &lhs, const vec2 &rhs);
 
 bool operator>=(const vec2 &lhs, const vec2 &rhs);
+
+// Returns the magnitude of a vector
+float Magnitude(const vec2 vec);
+
+// Returns the normalized vector w/o modifying original vector
+vec2 Normal(const vec2 &v);
+
+// Returns the normalized vector (changes the vector to normalized vector)
+vec2 &Normalize(vec2 &v);
 
 float DotProduct(const vec2 &lhs, const vec2 &rhs);
 
