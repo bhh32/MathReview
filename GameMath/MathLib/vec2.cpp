@@ -177,8 +177,9 @@ vec2 Lerp(const vec2 &start, const vec2 &end, float time)
 vec2 Min(const vec2 & x, const vec2 & y)
 {
 	vec2 temp;
-
-	if (x.x < y.x)
+	temp.x = fmin(x.x, y.x);
+	temp.y = fmin(x.y, y.y);
+	/*if (x.x < y.x)
 		temp.x = x.x;
 	else if (x.x == y.x)
 		temp.x = x.x;
@@ -190,7 +191,7 @@ vec2 Min(const vec2 & x, const vec2 & y)
 	else if (x.y == y.y)
 		temp.y = x.y;
 	else
-		temp.y = y.y;
+		temp.y = y.y;*/
 
 	return temp;
 }

@@ -12,12 +12,13 @@ struct Circle
 // Axis Aligned Bounding Box
 struct AABB
 {
-	//vec2 position;
-	//vec2 extents;
-	
-	vec2 min;
-	vec2 max;
-	// Four Points
+	vec2 position;
+	vec2 extents;
+
+	// Used to draw the bounding box
+	vec2 minCorner;
+	vec2 maxCorner;
+
 	// Position width and height
 	// Min and Max (Two Corners)
 };

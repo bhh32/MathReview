@@ -1,4 +1,5 @@
 #include "DrawShape.h"
+#include "Transform.h"
 #include "sfwdraw.h"
 
 void DrawCircle(const Circle & C)
@@ -8,8 +9,8 @@ void DrawCircle(const Circle & C)
 
 void DrawAABB(const AABB &aabb)
 {
-	sfw::drawLine(aabb.max.x, aabb.max.y, aabb.max.x, aabb.min.y, BLUE);
-	sfw::drawLine(aabb.max.x, aabb.min.y, aabb.min.x, aabb.min.y, BLUE);
-	sfw::drawLine(aabb.min.x, aabb.min.y, aabb.min.x, aabb.max.y, BLUE);
-	sfw::drawLine(aabb.min.x, aabb.max.y, aabb.max.x, aabb.max.y, BLUE);
+	sfw::drawLine(aabb.maxCorner.x, aabb.maxCorner.y, aabb.maxCorner.x, aabb.minCorner.y, BLUE);
+	sfw::drawLine(aabb.maxCorner.x, aabb.minCorner.y, aabb.minCorner.x, aabb.minCorner.y, BLUE);
+	sfw::drawLine(aabb.minCorner.x, aabb.minCorner.y, aabb.minCorner.x, aabb.maxCorner.y, BLUE);
+	sfw::drawLine(aabb.minCorner.x, aabb.maxCorner.y, aabb.maxCorner.x, aabb.maxCorner.y, BLUE);
 }

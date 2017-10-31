@@ -82,11 +82,7 @@ bool operator==(const mat3 &A, const mat3 &B)
 
 mat3 Transpose(const mat3 &A)
 {
-	/*mat3 temp = {A.m[0], A.m[3], A.m[6],
-	             A.m[1], A.m[4], A.m[7],
-	             A.m[2], A.m[5], A.m[8]};
-	
-	return temp;*/
+
 	return mat3{ A[0][0], A[1][0], A[2][0],
 		A[0][1], A[1][1], A[2][1],
 		A[0][2], A[1][2], A[2][2] };

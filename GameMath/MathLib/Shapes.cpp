@@ -18,22 +18,24 @@ Circle operator*(const mat3 & M, const Circle & C)
 AABB operator*(const mat3 &M,  AABB &B)
 {
 	// Try to independantly research a solution to this
-	AABB retval = B;
-	vec2 matrixMax = (vec2{ M[0].x, M[1].y});
-	vec2 matrixMin = (vec2{ M[1].x, M[0].y});
-
-	if (matrixMax.x > M[1].x)
-		retval.max.x = matrixMax.x;
-	if (matrixMax.y > M[0].y)
-		retval.max.y = matrixMax.y;
-
-	if (matrixMin.x < M[0].x)
-		retval.min.x = matrixMin.x;
-	if (matrixMin.y < M[1].y)
-		retval.min.y = matrixMin.y;
-
-	//retval.position = (retval.max + retval.min) / 2;
-	//retval.extents = (retval.max - retval.min);
+	AABB returnVal = B;
 	
-	return retval;
+	vec2 topLeft = { B.position.x - B.extents.x, B.position.y + B.extents.y };
+	vec2 topRight = B.position + B.extents;
+	vec2 bottomLeft = B.position - B.extents;
+	vec2 bottomRight = { topRight.x, bottomLeft.y };
+
+
+	topRight = (M * vec3{ topRight.x, topRight.y, 1 }).xy;
+	bottomLeft = (M * vec3{ bottomLeft.x, bottomLeft.y, 1 }).xy;
+	topLeft = (M * vec3{ topLeft.x, topLeft.y, 1 }).xy;
+	bottomRight = (M * vec3{ bottomRight.x, bottomRight.y, 1 }).xy;
+
+	returnVal.minCorner = Min(topRight, Min(bottomLeft, Min(topLeft, bottomRight)));
+	returnVal.maxCorner = Max(topRight, Max(bottomLeft, Max(topLeft, bottomRight)));
+
+	returnVal.position = (returnVal.maxCorner + returnVal.minCorner) / 2;
+	returnVal.extents = (returnVal.maxCorner - returnVal.minCorner) / 2;
+
+	return returnVal;
 }

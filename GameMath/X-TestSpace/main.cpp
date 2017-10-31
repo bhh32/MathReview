@@ -13,6 +13,7 @@
 using std::cout;
 using std::endl;
 
+
 int main()
 {
 	/*
@@ -403,16 +404,19 @@ int main()
 
 	Transform transform;
 	Rigidbody rigidbody;
-	AABB aabb;	
+	AABB aabb = { {0,0}, {1,1} };
 
 	transform.position = vec2{ 400, 300 };
-	transform.demension = vec2{ 150, 80 };
+	transform.demension = vec2{ 100, 150 };
 
-	//aabb.position = transform.position;
+	Transform t2;
+	Rigidbody rb2;
+	AABB aabb2 = { {0, 0}, {1, 1} };	
 
-	aabb.min = {-.25,-.25};
-	aabb.max = { .25, .25};
-	Circle circ = { {0, 0}, .25 };
+	t2.position = vec2{ 200, 100 };
+	t2.demension = vec2{ 50, 100 };
+
+	Circle circ = { {0, 0}, 80 };
 	bool jumped = false;
 
 	while (sfw::stepContext()) 
@@ -445,22 +449,24 @@ int main()
 		//DrawMatrix(myBaby.GetGlobalTransform(), 30);
 
 		/**Rigidbody tests **/
-		DrawCircle(transform.GetGlobalTransform() * circ);
-		
-		//DrawMatrix(transform.GetGlobalTransform(), 40);
-		//aabb.max = { transform.position.x + (transform.demension.x / 2), transform.position.y + (transform.demension.y / 2) };
-		//aabb.min = { transform.position.x - (transform.demension.x / 2), transform.position.y - (transform.demension.y / 2) };
+		//DrawCircle(transform.GetGlobalTransform() * circ);
+		DrawMatrix(transform.GetGlobalTransform(), circ.radius);
+		DrawMatrix(t2.GetGlobalTransform(), 40);
+
 
 		DrawAABB(transform.GetGlobalTransform() * aabb);
-		
+		DrawAABB(t2.GetGlobalTransform() * aabb2);
 		float dt = sfw::getDeltaTime();		
+		
 
+		
 		//rigidbody.force += { 0, -25 }; // Gravity
 
+
 		if (sfw::getKey('W'))rigidbody.force += transform.GetGlobalTransform()[1].xy * 10.f;
-		if (sfw::getKey('A'))rigidbody.force += {-100, 0};
-		if (sfw::getKey('S'))rigidbody.force += -transform.GetGlobalTransform()[1].xy * 10;
-		if (sfw::getKey('D'))rigidbody.force += {100, 0};
+		if (sfw::getKey('A'))rigidbody.torque += 360;
+		if (sfw::getKey('D'))rigidbody.torque += -360;
+		if (sfw::getKey('S'))rigidbody.force += -transform.GetGlobalTransform()[1].xy * 10.f;
 		
 		if (sfw::getKey(' '))
 		{
@@ -468,8 +474,9 @@ int main()
 			rigidbody.torque += -rigidbody.angularVelocity * 20;
 		}
 
-		rigidbody.Integrate(transform, dt);
-		//aabb = transform.GetGlobalTransform() * aabb;
+		rigidbody.Integrate(transform, dt); 
+
+		
 	};
 
 	return 0;
