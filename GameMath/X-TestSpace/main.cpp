@@ -7,6 +7,8 @@
 #include "sfwdraw.h"
 #include "Transform.h"
 #include "Rigidbody.h"
+#include "Shapes.h"
+#include "DrawShape.h"
 
 using std::cout;
 using std::endl;
@@ -401,8 +403,17 @@ int main()
 
 	Transform transform;
 	Rigidbody rigidbody;
-	
+	AABB aabb;	
+
 	transform.position = vec2{ 400, 300 };
+	transform.demension = vec2{ 150, 80 };
+
+	//aabb.position = transform.position;
+
+	aabb.min = {-.25,-.25};
+	aabb.max = { .25, .25};
+	Circle circ = { {0, 0}, .25 };
+	bool jumped = false;
 
 	while (sfw::stepContext()) 
 	{
@@ -434,13 +445,23 @@ int main()
 		//DrawMatrix(myBaby.GetGlobalTransform(), 30);
 
 		/**Rigidbody tests **/
-		float dt = sfw::getDeltaTime();
+		DrawCircle(transform.GetGlobalTransform() * circ);
+		
+		//DrawMatrix(transform.GetGlobalTransform(), 40);
+		//aabb.max = { transform.position.x + (transform.demension.x / 2), transform.position.y + (transform.demension.y / 2) };
+		//aabb.min = { transform.position.x - (transform.demension.x / 2), transform.position.y - (transform.demension.y / 2) };
+
+		DrawAABB(transform.GetGlobalTransform() * aabb);
+		
+		float dt = sfw::getDeltaTime();		
 
 		//rigidbody.force += { 0, -25 }; // Gravity
 
-		if (sfw::getKey('W'))rigidbody.force += transform.GetGlobalTransform()[1].xy * 100.f;
-		if (sfw::getKey('A'))rigidbody.torque += 360;
-		if (sfw::getKey('D'))rigidbody.torque += -360;
+		if (sfw::getKey('W'))rigidbody.force += transform.GetGlobalTransform()[1].xy * 10.f;
+		if (sfw::getKey('A'))rigidbody.force += {-100, 0};
+		if (sfw::getKey('S'))rigidbody.force += -transform.GetGlobalTransform()[1].xy * 10;
+		if (sfw::getKey('D'))rigidbody.force += {100, 0};
+		
 		if (sfw::getKey(' '))
 		{
 			rigidbody.force += -rigidbody.velocity * 20;
@@ -448,8 +469,7 @@ int main()
 		}
 
 		rigidbody.Integrate(transform, dt);
-		transform.DrawMatrix(transform.GetGlobalTransform(), 12);
-			
+		//aabb = transform.GetGlobalTransform() * aabb;
 	};
 
 	return 0;

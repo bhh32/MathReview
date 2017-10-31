@@ -121,7 +121,11 @@ float DistanceVec3(const vec3 &lhs, const vec3 &rhs)
 
 float DotProductVec3(const vec3 &lhs, const vec3 &rhs)
 {
-	return{ (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z)};
+	float x = lhs.x * rhs.x;
+	float y = lhs.y * rhs.y;
+	float z = lhs.z * rhs.z;
+	float sum = x + y + z;
+	return sum;
 }
 
 vec3 CrossProduct(const vec3 &a, const vec3 &b)

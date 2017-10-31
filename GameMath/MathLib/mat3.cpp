@@ -1,12 +1,12 @@
 #include "mat3.h"
 #include <cmath>
 
-vec3 & mat3::operator[](unsigned idx)
+vec3 &mat3::operator[](unsigned idx)
 {
 	return c[idx];
 }
 
-const vec3 & mat3::operator[](unsigned idx) const
+const vec3 &mat3::operator[](unsigned idx) const
 {
 	return c[idx];
 }
@@ -48,10 +48,11 @@ mat3 operator*(const mat3 &A, const mat3 &B)
 vec3 operator*(const mat3 &A, const vec3 &V)
 {
 	mat3 At = Transpose(A);
-
-	return vec3{ (DotProductVec3(At[0], V),
-				DotProductVec3(At[2], V),
-				DotProductVec3(At[3], V)) };
+	float x = (DotProductVec3(At[0], V));
+	float y = DotProductVec3(At[1], V);
+	float z = DotProductVec3(At[2], V);
+	 return vec3{ x,y,z};
+	
 }
 
 mat3 operator*(const float &x, const mat3 &A)
@@ -81,11 +82,14 @@ bool operator==(const mat3 &A, const mat3 &B)
 
 mat3 Transpose(const mat3 &A)
 {
-	mat3 temp = {A.m[0], A.m[3], A.m[6],
+	/*mat3 temp = {A.m[0], A.m[3], A.m[6],
 	             A.m[1], A.m[4], A.m[7],
 	             A.m[2], A.m[5], A.m[8]};
 	
-	return temp;
+	return temp;*/
+	return mat3{ A[0][0], A[1][0], A[2][0],
+		A[0][1], A[1][1], A[2][1],
+		A[0][2], A[1][2], A[2][2] };
 }
 
 float Determinant(const mat3 &A)

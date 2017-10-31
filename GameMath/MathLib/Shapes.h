@@ -12,8 +12,11 @@ struct Circle
 // Axis Aligned Bounding Box
 struct AABB
 {
-	vec2 position;
-	vec2 extents;
+	//vec2 position;
+	//vec2 extents;
+	
+	vec2 min;
+	vec2 max;
 	// Four Points
 	// Position width and height
 	// Min and Max (Two Corners)
@@ -22,4 +25,4 @@ struct AABB
 // Transform: position, rotation, scale
 Circle operator*(const mat3 &M, const Circle &C);
 
-AABB operator*(const mat3 &M, const AABB &B);
+AABB operator*(const mat3 &M, AABB &B);

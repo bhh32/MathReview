@@ -124,7 +124,10 @@ const float vec2::operator[](const int index) const
 
 float Magnitude(const vec2 vec)
 {
-	float length = abs(sqrt((vec.x * vec.x) + (vec.y * vec.y)));
+	float aSqr = vec.x * vec.x;
+	float bSqr = vec.y * vec.y;
+
+	float length = sqrtf(aSqr + bSqr);
 
 	return length;
 }

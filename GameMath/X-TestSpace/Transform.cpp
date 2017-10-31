@@ -36,18 +36,18 @@ mat3 Transform::GetGlobalTransform() const
 	}
 }
 
-void Transform::DrawMatrix(const mat3 &t, float drawing_scale)
+void DrawMatrix(const mat3 &t, float drawing_scale)
 {
 	// Base position in matrix
 	vec2 pos = t[2].xy;
 
-	vec2 rightEndPoint = pos + t[0].xy * drawing_scale;
-	vec2 upEndPoint = pos + t[1].xy * drawing_scale;
+	vec2 rightEndPoint = pos + Normal(t[0].xy) * drawing_scale;
+	vec2 upEndPoint = pos + Normal(t[1].xy) * drawing_scale;
 
 	sfw::drawLine(pos.x, pos.y, rightEndPoint.x, rightEndPoint.y, RED);
 	sfw::drawLine(pos.x, pos.y, upEndPoint.x, upEndPoint.y, GREEN);
 
-	sfw::drawCircle(pos.x, pos.y, drawing_scale / 4);
+	sfw::drawCircle(pos.x, pos.y, drawing_scale / 2);
 }
 
 void Transform::DrawTexture(unsigned sprite, const mat3 & t)
