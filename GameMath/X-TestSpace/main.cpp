@@ -409,12 +409,26 @@ int main()
 	player.transform.position = vec2{ 400, 300 };
 	player.collider.box.extents = { .5, .5 };
 
-	Wall p2;
-	p2.sprite = sfw::loadTextureMap("../resources/classic_ship.png");
-	p2.transform.demension = vec2{ 48, 48 };
-	p2.transform.position = vec2{ 200, 150 };
-	p2.collider.box.extents = { .5, .5 };
+	Wall walls[2];
 
+	walls[0].sprite = sfw::loadTextureMap("../resources/wall.png");
+	walls[0].transform.demension = vec2{ 24, 600 };
+	walls[0].transform.position = vec2{ 15, 300 };
+	walls[0].collider.box.extents = { .5, .5 };
+
+	walls[1].sprite = sfw::loadTextureMap("../resources/wall.png");
+	walls[1].transform.demension = vec2{ 24, 600 };
+	walls[1].transform.position = vec2{ 785, 300 };
+	walls[1].collider.box.extents = { .5, .5 };
+
+	Ball ball;
+	ball.sprite = sfw::loadTextureMap("../resources/kirby_ball.png");
+	ball.transform.demension = vec2{ 37, 37 };
+	ball.transform.position = vec2{ 350, 400 };
+	ball.collider.box.extents = { .5, .5 };
+	ball.rigidbody.velocity = { 200, 0 };
+	ball.rigidbody.drag = 0;
+	
 
 	while (sfw::stepContext()) 
 	{
@@ -449,19 +463,33 @@ int main()
 		
 		float dt = sfw::getDeltaTime();
 
+		// Update Controller
 		player.controller.Poll(player.rigidbody, player.transform);
 
+		// Update rigidbodies
 		player.rigidbody.Integrate(player.transform, dt);
+		ball.rigidbody.Integrate(ball.transform, dt);
 
+		// Draw stuff
 		player.sprite.Draw(player.transform);
-
 		DrawAABB(player.collider.GetGlobalBox(player.transform), MAGENTA);
 		
-		p2.sprite.Draw(p2.transform);
+		ball.sprite.Draw(ball.transform);
+		DrawAABB(ball.collider.GetGlobalBox(ball.transform), RED);
 
-		DrawAABB(p2.collider.GetGlobalBox(p2.transform), BLUE);
-
-		DoCollision(player, p2);
+		for (int i = 0; i < 2; ++i)
+		{
+			walls[i].sprite.Draw(walls[i].transform);
+			
+			DrawAABB(walls[i].collider.GetGlobalBox(walls[i].transform), BLUE);
+		}
+		
+		// Collision Resolution
+		for (int i = 0; i < 2; ++i)
+		{
+			DoCollision(player, walls[i], .25f);
+			DoCollision(ball, walls[i]);
+		}
 			
 	};
 

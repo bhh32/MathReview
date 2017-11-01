@@ -9,6 +9,7 @@ struct Collision
 	float penetrationDepth; // If penetration depth is negative, that's the distance
 	float handedness;  // Does A need to move left or right along the axis
 	vec2 axis;
+	float elasticity = 1.0f;
 };
 
 Collision Intersect_1D(float Amin, float Amax, float Bmin, float Bmax);

@@ -24,4 +24,15 @@ public:
 	Sprite sprite;
 };
 
-bool DoCollision(Player &player, const Wall &wall);
+class Ball
+{
+public:
+	Transform transform;
+	Rigidbody rigidbody;
+	Collider collider;
+	Sprite sprite;
+};
+
+bool DoCollision(Player &player, const Wall &wall, float elasticity =  1.f);
+bool DoCollision(Ball &ball, const Wall &wall, float elasticity = 1.f);
+bool DoCollision(Player &player, const Ball &ball, float elasticity = 1.f);
