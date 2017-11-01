@@ -15,7 +15,7 @@ Circle operator*(const mat3 & M, const Circle & C)
 	return ret;
 }
 
-AABB operator*(const mat3 &M,  AABB &B)
+AABB operator*(const mat3 &M,  const AABB &B)
 {
 	// Try to independantly research a solution to this
 	AABB returnVal = B;

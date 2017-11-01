@@ -1,17 +1,15 @@
-#include <iostream>
-#include "vec2.h"
-#include "vec3.h"
-#include "mat3.h"
-#include "mathutils.h"
-#include <assert.h>
+//#include <iostream>
+//#include "vec2.h"
+//#include "vec3.h"
+//#include "mat3.h"
+//#include "mathutils.h"
+//#include <assert.h>
 #include "sfwdraw.h"
-#include "Transform.h"
-#include "Rigidbody.h"
-#include "Shapes.h"
+//#include "Transform.h"
+//#include "Rigidbody.h"
+//#include "Shapes.h"
 #include "DrawShape.h"
-
-using std::cout;
-using std::endl;
+#include "Player.h"
 
 
 int main()
@@ -402,22 +400,13 @@ int main()
 
 	/** Rigidbody tests **/
 
-	Transform transform;
-	Rigidbody rigidbody;
-	AABB aabb = { {0,0}, {1,1} };
+	Player player;
 
-	transform.position = vec2{ 400, 300 };
-	transform.demension = vec2{ 100, 150 };
+	player.sprite = sfw::loadTextureMap("../resources/classic_ship.png");
+	player.transform.demension = vec2{ 48, 48 };
+	player.transform.position = vec2{ 400, 300 };
+	player.collider.box.extents = { .5, .5 };
 
-	Transform t2;
-	Rigidbody rb2;
-	AABB aabb2 = { {0, 0}, {1, 1} };	
-
-	t2.position = vec2{ 200, 100 };
-	t2.demension = vec2{ 50, 100 };
-
-	Circle circ = { {0, 0}, 80 };
-	bool jumped = false;
 
 	while (sfw::stepContext()) 
 	{
@@ -449,33 +438,16 @@ int main()
 		//DrawMatrix(myBaby.GetGlobalTransform(), 30);
 
 		/**Rigidbody tests **/
-		//DrawCircle(transform.GetGlobalTransform() * circ);
-		DrawMatrix(transform.GetGlobalTransform(), circ.radius);
-		DrawMatrix(t2.GetGlobalTransform(), 40);
-
-
-		DrawAABB(transform.GetGlobalTransform() * aabb);
-		DrawAABB(t2.GetGlobalTransform() * aabb2);
-		float dt = sfw::getDeltaTime();		
 		
+		float dt = sfw::getDeltaTime();
 
-		
-		//rigidbody.force += { 0, -25 }; // Gravity
+		player.controller.Poll(player.rigidbody, player.transform);
 
+		player.rigidbody.Integrate(player.transform, dt);
 
-		if (sfw::getKey('W'))rigidbody.force += transform.GetGlobalTransform()[1].xy * 10.f;
-		if (sfw::getKey('A'))rigidbody.torque += 360;
-		if (sfw::getKey('D'))rigidbody.torque += -360;
-		if (sfw::getKey('S'))rigidbody.force += -transform.GetGlobalTransform()[1].xy * 10.f;
-		
-		if (sfw::getKey(' '))
-		{
-			rigidbody.force += -rigidbody.velocity * 20;
-			rigidbody.torque += -rigidbody.angularVelocity * 20;
-		}
+		player.sprite.Draw(player.transform);
 
-		rigidbody.Integrate(transform, dt); 
-
+		DrawAABB(player.collider.GetGlobalBox(player.transform), MAGENTA);
 		
 	};
 

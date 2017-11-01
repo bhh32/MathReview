@@ -19,6 +19,9 @@ struct AABB
 	vec2 minCorner;
 	vec2 maxCorner;
 
+	vec2 Min() const { return position - extents; }
+	vec2 Max() const { return position + extents; }
+
 	// Position width and height
 	// Min and Max (Two Corners)
 };
@@ -26,4 +29,4 @@ struct AABB
 // Transform: position, rotation, scale
 Circle operator*(const mat3 &M, const Circle &C);
 
-AABB operator*(const mat3 &M, AABB &B);
+AABB operator*(const mat3 &M, const AABB &B);

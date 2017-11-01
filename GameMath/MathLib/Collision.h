@@ -1,12 +1,20 @@
 #pragma once
 
 #include "mathutils.h"
+#include "Shapes.h"
 #include <cmath>
 
 struct Collision
 {
-	float penetrationDepth;
-	float handedness;
+	float penetrationDepth; // If penetration depth is negative, that's the distance
+	float handedness;  // Does A need to move left or right along the axis
+	vec2 axis;
 };
 
 Collision Intersect_1D(float Amin, float Amax, float Bmin, float Bmax);
+
+Collision Intersect_AABB(const AABB &A, const AABB &B);
+
+Collision Intersect_Circle(const Circle &A, const Circle &B);
+
+Collision Intersect_AABB_Circle(const AABB &A, const Circle &B);
