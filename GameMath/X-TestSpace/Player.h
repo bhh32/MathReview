@@ -35,4 +35,4 @@ public:
 
 bool DoCollision(Player &player, const Wall &wall, float elasticity =  1.f);
 bool DoCollision(Ball &ball, const Wall &wall, float elasticity = 1.f);
-bool DoCollision(Player &player, const Ball &ball, float elasticity = 1.f);
+bool DoCollision(Player &player, Ball &ball, float elasticity = 1.f);

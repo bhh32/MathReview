@@ -22,3 +22,7 @@ Collision Intersect_AABB_Circle(const AABB &A, const Circle &B);
 
                             // InOut Variables
 void Static_Resolution(vec2 &pos, vec2 &velocity, const Collision &hit, float elasticity = 1.0f);
+
+void Dynamic_Resolution(vec2 &Apos, vec2 &Avelocity, float Amass, 
+	                    vec2 &Bpos, vec2 &Bvelocity, float Bmass, 
+	                    const Collision &hit, float elasticity = 1.0f);

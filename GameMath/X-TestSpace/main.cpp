@@ -409,17 +409,31 @@ int main()
 	player.transform.position = vec2{ 400, 300 };
 	player.collider.box.extents = { .5, .5 };
 
-	Wall walls[2];
+	Wall walls[4];
 
+	// Left Wall
 	walls[0].sprite = sfw::loadTextureMap("../resources/wall.png");
 	walls[0].transform.demension = vec2{ 24, 600 };
 	walls[0].transform.position = vec2{ 15, 300 };
 	walls[0].collider.box.extents = { .5, .5 };
 
+	// Right Wall
 	walls[1].sprite = sfw::loadTextureMap("../resources/wall.png");
 	walls[1].transform.demension = vec2{ 24, 600 };
 	walls[1].transform.position = vec2{ 785, 300 };
 	walls[1].collider.box.extents = { .5, .5 };
+
+	// Bottom Wall
+	walls[2].sprite = sfw::loadTextureMap("../resources/wall.png");
+	walls[2].transform.demension = vec2{ 800, 24 };
+	walls[2].transform.position = vec2{ 400, 600 };
+	walls[2].collider.box.extents = { .5, .5 };
+
+	// Top Wall
+	walls[3].sprite = sfw::loadTextureMap("../resources/wall.png");
+	walls[3].transform.demension = vec2{ 800, 24 };
+	walls[3].transform.position = vec2{ 400, 0 };
+	walls[3].collider.box.extents = { .5, .5 };
 
 	Ball ball;
 	ball.sprite = sfw::loadTextureMap("../resources/kirby_ball.png");
@@ -477,18 +491,19 @@ int main()
 		ball.sprite.Draw(ball.transform);
 		DrawAABB(ball.collider.GetGlobalBox(ball.transform), RED);
 
-		for (int i = 0; i < 2; ++i)
+		                  // Draw walls
+		for (int i = 0; i < 4; ++i)
 		{
-			walls[i].sprite.Draw(walls[i].transform);
-			
+			walls[i].sprite.Draw(walls[i].transform);			
 			DrawAABB(walls[i].collider.GetGlobalBox(walls[i].transform), BLUE);
 		}
 		
 		// Collision Resolution
-		for (int i = 0; i < 2; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			DoCollision(player, walls[i], .25f);
 			DoCollision(ball, walls[i]);
+			DoCollision(player, ball);
 		}
 			
 	};

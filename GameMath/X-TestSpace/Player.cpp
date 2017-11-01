@@ -24,14 +24,16 @@ bool DoCollision(Ball & ball, const Wall & wall, float elasticity)
 	}
 }
 
-bool DoCollision(Player & player, const Ball & ball, float elasticity)
+bool DoCollision(Player & player, Ball & ball, float elasticity)
 {
 	auto hit = Collides(player.transform, player.collider, ball.transform, ball.collider);
 
 
 	if (hit.penetrationDepth > 0)
 	{
-		Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
+		Dynamic_Resolution(player.transform.position, player.rigidbody.velocity, player.rigidbody.mass, 
+			               ball.transform.position, ball.rigidbody.velocity, ball.rigidbody.mass,
+			               hit, elasticity);
 		return true;
 	}
 }
