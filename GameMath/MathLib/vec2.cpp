@@ -216,3 +216,13 @@ vec2 Max(const vec2 & x, const vec2 & y)
 
 	return temp;
 }
+
+vec2 Project(const vec2 & velocity, const vec2 & axis)
+{
+	return DotProduct(velocity, axis) * axis;
+}
+
+vec2 Reflect(const vec2 &velocity, const vec2 & axis)
+{
+	return 2 * Project(velocity, axis) - velocity;
+}

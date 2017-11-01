@@ -15,3 +15,13 @@ public:
 	Controller controller;
 	Sprite sprite;
 };
+
+class Wall
+{
+public:
+	Transform transform;
+	Collider collider;
+	Sprite sprite;
+};
+
+bool DoCollision(Player &player, const Wall &wall);

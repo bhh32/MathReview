@@ -1,4 +1,4 @@
-//#include <iostream>
+#include <iostream>
 //#include "vec2.h"
 //#include "vec3.h"
 //#include "mat3.h"
@@ -11,6 +11,8 @@
 #include "DrawShape.h"
 #include "Player.h"
 
+using std::cout;
+using std::endl;
 
 int main()
 {
@@ -407,6 +409,12 @@ int main()
 	player.transform.position = vec2{ 400, 300 };
 	player.collider.box.extents = { .5, .5 };
 
+	Wall p2;
+	p2.sprite = sfw::loadTextureMap("../resources/classic_ship.png");
+	p2.transform.demension = vec2{ 48, 48 };
+	p2.transform.position = vec2{ 200, 150 };
+	p2.collider.box.extents = { .5, .5 };
+
 
 	while (sfw::stepContext()) 
 	{
@@ -449,6 +457,12 @@ int main()
 
 		DrawAABB(player.collider.GetGlobalBox(player.transform), MAGENTA);
 		
+		p2.sprite.Draw(p2.transform);
+
+		DrawAABB(p2.collider.GetGlobalBox(p2.transform), BLUE);
+
+		DoCollision(player, p2);
+			
 	};
 
 	return 0;

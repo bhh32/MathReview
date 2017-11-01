@@ -93,4 +93,7 @@ vec2 Min(const vec2 &x, const vec2 &y);
 
 vec2 Max(const vec2 &x, const vec2 &y);
 
+vec2 Project(const vec2 &vector, const vec2 &axis);
+vec2 Reflect(const vec2 &vector, const vec2 &axis);
+
 #endif VEC2_H

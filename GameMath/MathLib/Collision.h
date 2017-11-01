@@ -18,3 +18,6 @@ Collision Intersect_AABB(const AABB &A, const AABB &B);
 Collision Intersect_Circle(const Circle &A, const Circle &B);
 
 Collision Intersect_AABB_Circle(const AABB &A, const Circle &B);
+
+                            // InOut Variables
+void Static_Resolution(vec2 &pos, vec2 &velocity, const Collision &hit, float elasticity = 1.0f);
