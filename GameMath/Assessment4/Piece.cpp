@@ -21,7 +21,7 @@ void Piece::InitPiece()
 	pieceTransform.angle = 0;
 
 	// Setup Forward, Up, and Speed vectors
-	forward = pieceTransform.position.Normal();
+	//forward = vec2.Normal();
 	up = vec2{ 0.f, 75.f * forward.y };
 	speed = vec2{ 5.f * forward.x, 0.f };
 }
