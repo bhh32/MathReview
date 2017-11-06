@@ -404,10 +404,12 @@ int main()
 
 	Player player;
 
-	player.sprite = sfw::loadTextureMap("../resources/classic_ship.png");
-	player.transform.demension = vec2{ 48, 48 };
-	player.transform.position = vec2{ 400, 300 };
+	player.sprite = sfw::loadTextureMap("../resources/paddle.png");
+	player.transform.demension = vec2{ 88, 18 };
+	player.transform.position = vec2{ 400, 3 };
 	player.collider.box.extents = { .5, .5 };
+	player.rigidbody.angularDrag = 5.0f;
+	player.rigidbody.mass = 100.f;
 
 	Wall walls[4];
 
@@ -429,10 +431,10 @@ int main()
 	walls[2].transform.position = vec2{ 400, 600 };
 	walls[2].collider.box.extents = { .5, .5 };
 
-	// Top Wall
-	walls[3].sprite = sfw::loadTextureMap("../resources/wall.png");
-	walls[3].transform.demension = vec2{ 800, 24 };
-	walls[3].transform.position = vec2{ 400, 0 };
+	// Bottom Wall
+	//walls[3].sprite = sfw::loadTextureMap("../resources/wall.png");
+	walls[3].transform.demension = vec2{ 800, 300 };
+	walls[3].transform.position = vec2{ 400, -150 };
 	walls[3].collider.box.extents = { .5, .5 };
 
 	Ball ball;
@@ -440,9 +442,12 @@ int main()
 	ball.transform.demension = vec2{ 37, 37 };
 	ball.transform.position = vec2{ 350, 400 };
 	ball.collider.box.extents = { .5, .5 };
-	ball.rigidbody.velocity = { 200, 0 };
+	ball.rigidbody.velocity = { 0, 300 };
 	ball.rigidbody.drag = 0;
 	
+
+	bool isGoingRight = true;
+	bool isGoingUp = true;
 
 	while (sfw::stepContext()) 
 	{
@@ -478,9 +483,45 @@ int main()
 		float dt = sfw::getDeltaTime();
 
 		// Update Controller
-		player.controller.Poll(player.rigidbody, player.transform);
+		//player.controller.Poll(player.rigidbody, player.transform);
 
 		// Update rigidbodies
+		if (ball.rigidbody.velocity.x > 500)
+			ball.rigidbody.velocity.x -= 50;
+		if (ball.rigidbody.velocity.y > 500)
+			ball.rigidbody.velocity.y -= 50;
+
+
+		// Makes the "player paddle" a moving platform for a platformer
+		if (isGoingRight)
+		{
+			player.rigidbody.velocity.x = player.transform.GetGlobalTransform()[0].x * 20 * sfw::getDeltaTime();
+
+			if (player.transform.position.x > 700)
+			{
+				isGoingRight = !isGoingRight;
+				isGoingUp = !isGoingUp;
+			}
+		}
+
+		if(isGoingUp)
+			player.rigidbody.velocity.y = player.transform.GetGlobalTransform()[1].y * 20 * sfw::getDeltaTime();
+
+		if(!isGoingUp)
+			player.rigidbody.velocity.y = -player.transform.GetGlobalTransform()[1].y * 20 * sfw::getDeltaTime();
+
+		if (!isGoingRight)
+		{
+			player.rigidbody.velocity.x = -player.transform.GetGlobalTransform()[0].x * 20 * sfw::getDeltaTime();
+			if (player.transform.position.x < 425)
+			{
+				isGoingRight = !isGoingRight;
+				isGoingUp = !isGoingUp;
+			}
+		}
+		//if (player.transform.GetGlobalTransform()[0].x > 500)
+			//player.rigidbody.force.y += player.transform.GetGlobalTransform()[1].y * 150 * sfw::getDeltaTime();
+
 		player.rigidbody.Integrate(player.transform, dt);
 		ball.rigidbody.Integrate(ball.transform, dt);
 
@@ -492,7 +533,7 @@ int main()
 		DrawAABB(ball.collider.GetGlobalBox(ball.transform), RED);
 
 		                  // Draw walls
-		for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 3; ++i)
 		{
 			walls[i].sprite.Draw(walls[i].transform);			
 			DrawAABB(walls[i].collider.GetGlobalBox(walls[i].transform), BLUE);
@@ -501,7 +542,10 @@ int main()
 		// Collision Resolution
 		for (int i = 0; i < 4; ++i)
 		{
-			DoCollision(player, walls[i], .25f);
+			if (DoCollision(player, walls[i], .25f))
+			{
+				player.rigidbody.velocity.x =  player.transform.GetGlobalTransform()[0].x * 20 * sfw::getDeltaTime() * -1;
+			}
 			DoCollision(ball, walls[i]);
 			DoCollision(player, ball);
 		}
