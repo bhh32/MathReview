@@ -5,17 +5,16 @@
 
 void PlayerController::Poll(Player &player)
 	{
-		float gravity = -9.8f;
-		
+		gravity = -9.8f;
 
 		if (sfw::getKey('D'))
 		{
-			player.rigidbody.force.x += player.transform.GetGlobalTransform()[0].x * 10.f;
+				player.rigidbody.velocity.x = player.transform.GetGlobalTransform()[0].x * 5.f;
 
 		}
 		if (sfw::getKey('A'))
 		{
-			player.rigidbody.force.x += -player.transform.GetGlobalTransform()[0].x * 10.f;
+				player.rigidbody.velocity.x = -player.transform.GetGlobalTransform()[0].x * 5.f;
 		}
 
 		if (sfw::getKey(' ') && player.isGrounded)
@@ -23,11 +22,10 @@ void PlayerController::Poll(Player &player)
 
 		if (player.isGrounded)
 		{
-			player.rigidbody.acceleration.y = 0;
-			player.rigidbody.velocity.y = 0;
+			player.rigidbody.force.y = -gravity;
 		}
 		else
-			player.rigidbody.velocity.y += gravity;
+			player.rigidbody.impulse.y += gravity;
 	}
 
 void PlatformController::PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx)

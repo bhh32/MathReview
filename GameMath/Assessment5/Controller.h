@@ -15,6 +15,8 @@ class PlayerController
 {
 public:
 	void Poll(Player &player);
+
+	float gravity;
 };
 
 class PlatformController

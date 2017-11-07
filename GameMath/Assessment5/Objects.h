@@ -52,4 +52,5 @@ public:
 };
 
 bool DoCollision(Player &player, const Wall &wall, float elasticity = 1.f);
-bool DoCollision(Player &player, const Platform &wall, float elasticity = 1.f);
+bool DoCollision(Player &player, const Platform &platform, float elasticity = 1.f);
+bool DoCollisionMoving(Player &player, Platform &platform, float elasticity = 1.f);
