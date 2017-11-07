@@ -39,7 +39,7 @@ public:
 				InitAnimation(0, 3, 0.1f);
 			UpdateAnim(dt);
 		}
-		if (sfw::getKey('A') && grounded)
+		else if (sfw::getKey('A') && grounded)
 		{
 			if (animMin != 21 && animMax != 24)
 			{
@@ -48,30 +48,58 @@ public:
 			}
 			UpdateAnim(dt);
 		}
-		if (sfw::getKey(' ') && !grounded)
+		// Update Jump Sprite
+		else if (sfw::getKey(' ') && !grounded)
 		{
+			// Tests which which jump sprite should be used
 			if (animMin == 0 && animMax == 3)
 			{
-				InitAnimation(5, 5, 0);
-				idx = 5;
+				// Set to left facing jump sprite
+				InitAnimation(4, 4, 0);
+				idx = 4;
 			}
 			else if (animMin == 21 && animMax == 24)
 			{
-				InitAnimation(26, 26, 0);
-				idx = 26;
+				// Set to right facing jump sprite
+				InitAnimation(25, 25, 0);
+				idx = 25;
 			}
+
+			if (sfw::getKey('D') && idx == 25)
+			{
+				InitAnimation(4, 4, 0);
+				idx = 4;
+			}
+			else if (sfw::getKey('A') && idx == 0)
+			{
+				InitAnimation(25, 25, 0);
+				idx = 25;
+			}
+
+
+			UpdateAnim(dt);
 		}
-		if (!sfw::getKey('A') && !sfw::getKey('D') /*&& !sfw::getKey(' ')*/)
+		// Tests if the player is idle and sets which idle sprite should be used
+		if (!sfw::getKey('A') && !sfw::getKey('D') && grounded)
 		{
 			if (idx >= 0 && idx < 4)
+			{
+				animMin = 0;
+				animMax = 0;
 				idx = 0;
+			}
 			else if (idx >= 21 && idx < 25)
+			{
+				animMin = 21;
+				animMax = 21;
 				idx = 21;
+			}
 		}
 		
 		sfw::drawTextureMatrix3(handle, idx, WHITE, M.m);
 	}
 
+	// Initialized the animation variables
 	void InitAnimation(int minRange, int maxRange, float animTimer)
 	{
 		animMin = minRange;
@@ -80,6 +108,7 @@ public:
 		startTimer = (*this).animTimer;
 	}
 
+	// Updates the Animation index based on the timer and delta time
 	void UpdateAnim(float dt)
 	{
 		animTimer -= dt;

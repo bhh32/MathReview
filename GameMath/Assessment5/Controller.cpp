@@ -68,7 +68,7 @@ void PlatformController::PollVerticalPlatform(Platform *platform, float minPosY,
 		{
 			p->rigidbody.velocity.y = -p->transform.GetGlobalTransform()[1].y * speed;
 
-			if (p->transform.position.x < minPosY)
+			if (p->transform.position.y <= minPosY)
 				p->isMovingUp = true;
 		}
 	}

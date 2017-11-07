@@ -30,7 +30,7 @@ int main()
 	staticPlatforms[0].transform.demension = vec2{ 110, 200 };
 	staticPlatforms[0].transform.position = vec2{ 500, 40 };
 
-	
+
 	// General Initialization of Horizontal Moving Platforms
 	Platform horizontalPlatforms[5];
 	for (int i = 0; i < 5; ++i)
@@ -59,9 +59,23 @@ int main()
 	upRightPlatforms[0].maxPosX = 220.f;
 
 	// General Initialization of upLeft Moving Platforms
-	/*Platform upLeftPlatforms[5];
+	Platform upLeftPlatforms[5];
 	for (int i = 0; i < 5; ++i)
-		upLeftPlatforms[i].InitUpLeftPlatforms(upLeftPlatforms[i]);*/
+		upLeftPlatforms[i].InitUpLeftPlatforms(upLeftPlatforms[i]);
+
+	// Specific Stats of Each UpLeft Moving Platform
+	/*upLeftPlatforms[0].transform.demension = vec2{ 88, 18 };
+	upLeftPlatforms[0].transform.position = vec2{ 600, 80 };*/
+
+	Platform verticalPlatforms[5];
+	for (int i = 0; i < 5; ++i)
+		verticalPlatforms[i].InitVerticalPlatforms(verticalPlatforms[i]);
+
+	// Specific Stats of each vertical moving platform
+	verticalPlatforms[0].transform.demension = vec2{ 88, 18 };
+	verticalPlatforms[0].transform.position = vec2{ 500, 180 };
+	verticalPlatforms[0].minPosY = 180.f;
+	verticalPlatforms[0].maxPosY = 300.f;
 
 	// Init of the ground object
 	Wall ground;
@@ -88,47 +102,66 @@ int main()
 			horizontalPlatforms[i].controller.PollHorizontalPlatform(horizontalPlatforms, horizontalPlatforms[i].minPosX, horizontalPlatforms[i].maxPosX, horizontalPlatforms[i].speed, i);
 			horizontalPlatforms[i].rigidbody.Integrate(horizontalPlatforms[i].transform, dt);
 
+			// Update the UpRight Moving Platforms
 			upRightPlatforms[i].controller.PollDiagonalUpRightPlatform(upRightPlatforms, upRightPlatforms[i].minPosX, upRightPlatforms[i].maxPosX,upRightPlatforms[i].speed, i);
 			upRightPlatforms[i].rigidbody.Integrate(upRightPlatforms[i].transform, dt);
+
+			// Update the Vertical Moving Platforms
+			verticalPlatforms[i].controller.PollVerticalPlatform(verticalPlatforms, verticalPlatforms[i].minPosY, verticalPlatforms[i].maxPosY, verticalPlatforms[i].speed, i);
+			verticalPlatforms[i].rigidbody.Integrate(verticalPlatforms[i].transform, dt);
+
 		}
 		
 		// Draw Stuff
 		
 		player.sprite.DrawAnim(player.transform, player.isGrounded, dt);
 
+		/* Draw Moving Platforms */
 		for (int i = 0; i < 2; ++i)
 		{
 			staticPlatforms[i].sprite.Draw(staticPlatforms[i].transform);
 			horizontalPlatforms[i].sprite.Draw(horizontalPlatforms[i].transform);
 			upRightPlatforms[i].sprite.Draw(upRightPlatforms[i].transform);
+			verticalPlatforms[i].sprite.Draw(verticalPlatforms[i].transform);
 		}
 		ground.sprite.Draw(ground.transform);
 
 		// Collision Resolution
-
-		if (DoCollision(player, staticPlatforms[0], 0.01f))
-			player.isGrounded = true;
-		else if (DoCollision(player, horizontalPlatforms[0], 0.01f))
-		{
-			player.isGrounded = true;
-			if (!sfw::getKey('A') && !sfw::getKey('D'))
-				player.rigidbody.velocity.x = horizontalPlatforms[0].rigidbody.velocity.x;
-		}
-		else if (DoCollision(player, ground, .01f))
-		{
-			player.isGrounded = true;
-		}
-		else if (DoCollision(player, upRightPlatforms[0], 0.f))
-		{
-			player.isGrounded = true;
-			if (!sfw::getKey('A') && !sfw::getKey('D'))
+			if (DoCollision(player, staticPlatforms[0], 0.1f))
 			{
-				player.rigidbody.velocity.x = horizontalPlatforms[0].rigidbody.velocity.x;
+				player.isGrounded = true;
 			}
-		}
-		else
+			else if (DoCollision(player, horizontalPlatforms[0], 0.1f))
+			{
+				player.isGrounded = true;
+				if (!sfw::getKey('A') && !sfw::getKey('D'))
+					player.rigidbody.velocity.x = horizontalPlatforms[0].rigidbody.velocity.x;
+			}
+			else if (DoCollision(player, horizontalPlatforms[1], 0.1f))
+			{
+				player.isGrounded = true;
+				if (!sfw::getKey('A') && !sfw::getKey('D'))
+					player.rigidbody.velocity.x = horizontalPlatforms[1].rigidbody.velocity.x;
+			}
+			else if (DoCollision(player, upRightPlatforms[0], 0.01f))
+			{
+				player.isGrounded = true;
+				if (!sfw::getKey('A') && !sfw::getKey('D'))
+				{
+					player.rigidbody.velocity.x = upRightPlatforms[0].rigidbody.velocity.x;
+				}
+			}
+			else if (DoCollision(player, verticalPlatforms[0], 0.01f))
+			{
+				player.isGrounded = true;
+			}
+			else
+			{
+				player.isGrounded = false;
+			}
+		if (DoCollision(player, ground, .01f))
 		{
-			player.isGrounded = false;
+			player.isGrounded = true;
 		}
 	}
 	
