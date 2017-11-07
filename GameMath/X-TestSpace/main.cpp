@@ -544,7 +544,7 @@ int main()
 		{
 			if (DoCollision(player, walls[i], .25f))
 			{
-				player.rigidbody.velocity.x =  player.transform.GetGlobalTransform()[0].x * 20 * sfw::getDeltaTime() * -1;
+				player.rigidbody.velocity.x =  player.transform.GetGlobalTransform()[0].x * 20 * dt * -1;
 			}
 			DoCollision(ball, walls[i]);
 			DoCollision(player, ball);

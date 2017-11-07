@@ -16,10 +16,10 @@ public:
 
 	}
 
-	void Draw(const Transform &t, const mat3 &cam = mat3::Identity())
+	void Draw(const Transform &t, int idx = 0, const mat3 &cam = mat3::Identity())
 	{
 		mat3 M = cam * t.GetGlobalTransform() * Translate(offset) * Scale(dim);
 
-		sfw::drawTextureMatrix3(handle, 0, WHITE, M.m);
+		sfw::drawTextureMatrix3(handle, idx, WHITE, M.m);
 	}
 };

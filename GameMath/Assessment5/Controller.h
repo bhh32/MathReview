@@ -6,6 +6,7 @@
 //#include "Rigidbody.h"
 
 class Platform;
+class Player;
 class Rigidbody;
 class Transform;
 
@@ -13,17 +14,17 @@ class Transform;
 class PlayerController
 {
 public:
-	void Poll(Rigidbody *rb, const Transform *t);
+	void Poll(Player &player);
 };
 
 class PlatformController
 {
 public:
-	void PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed);
+	void PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx);
 
-	void PollVerticalPlatform(Platform *platform, float minPosY, float maxPosY, float speed);
+	void PollVerticalPlatform(Platform *platform, float minPosY, float maxPosY, float speed, int idx);
 
-	void PollDiagonalUpRightPlatform(Platform *platform, float minPosX, float maxPosX, float speed);
+	void PollDiagonalUpRightPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx);
 
-	void PollDiagonalUpLeftPlatform(Platform *platform, float minPosX, float maxPosX, float speed);
+	void PollDiagonalUpLeftPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx);
 };

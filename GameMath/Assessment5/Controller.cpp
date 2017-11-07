@@ -1,141 +1,140 @@
 #include "Controller.h"
 #include "Objects.h"
 
-//#include "Transform.h"
-
-
 // Poll for input and apply changes to the rigidbody
 
-void PlayerController::Poll(Rigidbody *rb, const Transform *t)
+void PlayerController::Poll(Player &player)
 	{
-		//if (sfw::getKey('W')) rb.force += t.GetGlobalTransform()[1].xy * 10;
-		//if (sfw::getKey('A')) rb.torque += 360;
-		//if (sfw::getKey('D')) rb.torque += -360;
-		//if (sfw::getKey('Q')) rb.impulse += -t.GetGlobalTransform()[1].xy * 10;
-		//if (sfw::getKey(' ')) // breaking force
-		//{
-		//	rb.force += -rb.velocity * 20;
-		//	rb.torque += -rb.angularVelocity * 20;
-		//}
+		float gravity = -9.8f;
+		
 
 		if (sfw::getKey('D'))
 		{
-			rb->velocity.x = t->GetGlobalTransform()[0].x * 500.f * sfw::getDeltaTime();
+			player.rigidbody.force.x += player.transform.GetGlobalTransform()[0].x * 10.f;
 
-		}
-		else
-		{
-			rb->velocity.x = 0;
 		}
 		if (sfw::getKey('A'))
 		{
-			rb->velocity.x = -t->GetGlobalTransform()[0].x * 500.f * sfw::getDeltaTime();
+			player.rigidbody.force.x += -player.transform.GetGlobalTransform()[0].x * 10.f;
 		}
 
-		if (!sfw::getKey('D') && !sfw::getKey('A'))
-			rb->velocity.x = 0;
-	}
+		if (sfw::getKey(' ') && player.isGrounded)
+			player.rigidbody.impulse.y += (gravity * -1) * 25.f;
 
-void PlatformController::PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed)
-	{
-		if (platform->isMovingRight)
+		if (player.isGrounded)
 		{
-			platform->rigidbody.velocity.x = platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
-
-			if (platform->transform.position.x > maxPosX)
-			{
-				platform->isMovingRight = false;
-			}
+			player.rigidbody.acceleration.y = 0;
+			player.rigidbody.velocity.y = 0;
 		}
-
-		else if (!platform->isMovingRight)
-		{
-			platform->rigidbody.velocity.x = -platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
-
-			if (platform->transform.position.x < minPosX)
-				platform->isMovingRight = true;
-		}
-	}
-
-void PlatformController::PollVerticalPlatform(Platform *platform, float minPosY, float maxPosY, float speed)
-	{
-		if (platform->isMovingUp)
-		{
-			platform->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
-
-			if (platform->transform.position.y > maxPosY)
-			{
-				platform->isMovingUp = false;
-			}
-		}
-
-		else if (!platform->isMovingUp)
-		{
-			platform->rigidbody.velocity.y = -platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
-
-			if (platform->transform.position.x < minPosY)
-				platform->isMovingUp = true;
-		}
-	}
-
-void PlatformController::PollDiagonalUpRightPlatform(Platform *platform, float minPosX, float maxPosX, float speed)
-	{
-		if (platform->isMovingRight)
-		{
-			platform->rigidbody.velocity.x = platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
-
-			if (platform->transform.position.x > maxPosX)
-			{
-				platform->isMovingRight = false;
-				platform->isMovingUp = false;
-			}
-		}
-
-		if (platform->isMovingUp)
-			platform->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
 		else
-			platform->rigidbody.velocity.y = -platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
+			player.rigidbody.velocity.y += gravity;
+	}
 
-
-		if (!platform->isMovingRight)
+void PlatformController::PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx)
+	{
+		Platform *p = &platform[idx];
+		if (p->isMovingRight)
 		{
-			platform->rigidbody.velocity.x = -platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
+			p->rigidbody.velocity.x = p->transform.GetGlobalTransform()[0].x * speed;
 
-			if (platform->transform.position.x < minPosX)
+			if (p->transform.position.x > maxPosX)
 			{
-				platform->isMovingRight = true;
-				platform->isMovingUp = true;
+				p->isMovingRight = false;
+			}
+		}
+
+		else if (!p->isMovingRight)
+		{
+			p->rigidbody.velocity.x = -p->transform.GetGlobalTransform()[0].x * speed;
+
+			if (p->transform.position.x < minPosX)
+				p->isMovingRight = true;
+		}
+	}
+
+void PlatformController::PollVerticalPlatform(Platform *platform, float minPosY, float maxPosY, float speed, int idx)
+	{
+		Platform *p = &platform[idx];
+
+		if (p->isMovingUp)
+		{
+			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
+
+			if (p->transform.position.y > maxPosY)
+			{
+				p->isMovingUp = false;
+			}
+		}
+
+		else if (!p->isMovingUp)
+		{
+			p->rigidbody.velocity.y = -p->transform.GetGlobalTransform()[1].y * speed;
+
+			if (p->transform.position.x < minPosY)
+				p->isMovingUp = true;
+		}
+	}
+
+void PlatformController::PollDiagonalUpRightPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx)
+	{
+		Platform *p = &platform[idx];
+		if (p->isMovingRight)
+		{
+			p->rigidbody.velocity.x = p->transform.GetGlobalTransform()[0].x * speed;
+
+			if (p->transform.position.x > maxPosX)
+			{
+				p->isMovingRight = false;
+				p->isMovingUp = false;
+			}
+		}
+
+		if (p->isMovingUp)
+			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
+		else
+			p->rigidbody.velocity.y = -platform->transform.GetGlobalTransform()[1].y * speed;
+
+
+		if (!p->isMovingRight)
+		{
+			p->rigidbody.velocity.x = -platform->transform.GetGlobalTransform()[0].x * speed;
+
+			if (p->transform.position.x < minPosX)
+			{
+				p->isMovingRight = true;
+				p->isMovingUp = true;
 			}
 		}
 	}
 
-void PlatformController::PollDiagonalUpLeftPlatform(Platform *platform, float minPosX, float maxPosX, float speed)
+void PlatformController::PollDiagonalUpLeftPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx)
 	{
-		if (platform->isMovingRight)
+		Platform *p = &platform[idx];
+		if (p->isMovingRight)
 		{
-			platform->rigidbody.velocity.x = platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
+			p->rigidbody.velocity.x = platform->transform.GetGlobalTransform()[0].x * speed;
 
-			if (platform->transform.position.x > maxPosX)
+			if (p->transform.position.x > maxPosX)
 			{
-				platform->isMovingRight = false;
-				platform->isMovingUp = true;
+				p->isMovingRight = false;
+				p->isMovingUp = true;
 			}
 		}
 
-		if (platform->isMovingUp)
-			platform->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
+		if (p->isMovingUp)
+			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
 		else
-			platform->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed * sfw::getDeltaTime();
+			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
 
 
-		if (!platform->isMovingRight)
+		if (!p->isMovingRight)
 		{
-			platform->rigidbody.velocity.x = -platform->transform.GetGlobalTransform()[0].x * speed * sfw::getDeltaTime();
+			p->rigidbody.velocity.x = -p->transform.GetGlobalTransform()[0].x * speed;
 
-			if (platform->transform.position.x < minPosX)
+			if (p->transform.position.x < minPosX)
 			{
-				platform->isMovingRight = true;
-				platform->isMovingUp = false;
+				p->isMovingRight = true;
+				p->isMovingUp = false;
 			}
 		}
 	}

@@ -14,6 +14,9 @@ public:
 	Collider collider;
 	PlayerController controller;
 	Sprite sprite;
+
+	bool isGrounded;
+	bool isOnPlatform;
 };
 
 class Wall
@@ -35,10 +38,18 @@ public:
 	bool isSoftPlatform;
 	bool isMovingUp;
 	bool isMovingRight;
+	float minPosX;
+	float maxPosX;
+	float minPosY;
+	float maxPosY;
+	float speed;
 
 	void InitStaticPlatforms(Platform &platform);
+	void InitHorizontalPlatforms(Platform &platform);
+	void InitVerticalPlatforms(Platform &platform);
+	void InitUpRightPlatforms(Platform &platform);
+	void InitUpLeftPlatforms(Platform &platform);
 };
-
 
 bool DoCollision(Player &player, const Wall &wall, float elasticity = 1.f);
 bool DoCollision(Player &player, const Platform &wall, float elasticity = 1.f);
