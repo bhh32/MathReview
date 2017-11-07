@@ -11,7 +11,7 @@ int main()
 	sfw::initContext();
 
 	Player player;
-	player.sprite = sfw::loadTextureMap("../resources/marioBig.png", 21, 1);
+	player.sprite = sfw::loadTextureMap("../resources/marioBig.png", 21, 2);
 	player.transform.demension = vec2{ 50, 75 };
 	player.transform.position = vec2{ 400, 300 };
 	player.collider.box.extents = { .5, .5 };
@@ -19,7 +19,8 @@ int main()
 	player.isOnPlatform = false;
 
 	player.rigidbody.drag = 0;
-	player.sprite.InitAnimation(0, 20, .1f);
+	player.sprite.animTimer = 1.f;
+	/*player.sprite.InitAnimation(0, 20, .1f);*/
 
 	Platform staticPlatforms[10];
 	for (int i = 0; i < 10; ++i)
@@ -74,11 +75,7 @@ int main()
 		float dt = sfw::getDeltaTime();
 
 		// Update Stuff
-
-		/* Update Animations */
 		
-		
-
 		/* Update Player Movement */
 		player.controller.Poll(player);
 		player.rigidbody.Integrate(player.transform, dt);
@@ -97,7 +94,7 @@ int main()
 		
 		// Draw Stuff
 		
-		player.sprite.DrawAnim(player.transform, dt);
+		player.sprite.DrawAnim(player.transform, player.isGrounded, dt);
 
 		for (int i = 0; i < 2; ++i)
 		{
@@ -108,15 +105,16 @@ int main()
 		ground.sprite.Draw(ground.transform);
 
 		// Collision Resolution
-		if (DoCollision(player, staticPlatforms[0], 0.f))
+
+		if (DoCollision(player, staticPlatforms[0], 0.01f))
 			player.isGrounded = true;
-		else if (DoCollision(player, horizontalPlatforms[0], 0.f))
+		else if (DoCollision(player, horizontalPlatforms[0], 0.01f))
 		{
 			player.isGrounded = true;
 			if (!sfw::getKey('A') && !sfw::getKey('D'))
 				player.rigidbody.velocity.x = horizontalPlatforms[0].rigidbody.velocity.x;
 		}
-		else if (DoCollision(player, ground, .0f))
+		else if (DoCollision(player, ground, .01f))
 		{
 			player.isGrounded = true;
 		}

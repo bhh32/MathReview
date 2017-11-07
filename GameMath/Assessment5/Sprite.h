@@ -30,17 +30,45 @@ public:
 		sfw::drawTextureMatrix3(handle, idx, WHITE, M.m);
 	}
 
-	void DrawAnim(const Transform &t, float dt, const mat3 &cam = mat3::Identity())
+	void DrawAnim(const Transform &t, bool grounded, float dt, const mat3 &cam = mat3::Identity())
 	{
 		mat3 M = cam * t.GetGlobalTransform() * Translate(offset) * Scale(dim);
-		if (sfw::getKey('A') && !sfw::getKey(' ') || sfw::getKey('D') && !sfw::getKey(' '))
+		if (sfw::getKey('D') && grounded)
 		{
-			animMin = 0;
-			animMax = 3;
+			if (animMin != 0 && animMax != 3)
+				InitAnimation(0, 3, 0.1f);
 			UpdateAnim(dt);
 		}
-		else
-			idx = 0;
+		if (sfw::getKey('A') && grounded)
+		{
+			if (animMin != 21 && animMax != 24)
+			{
+				InitAnimation(21, 24, 0.1f);
+				idx = 21;
+			}
+			UpdateAnim(dt);
+		}
+		if (sfw::getKey(' ') && !grounded)
+		{
+			if (animMin == 0 && animMax == 3)
+			{
+				InitAnimation(5, 5, 0);
+				idx = 5;
+			}
+			else if (animMin == 21 && animMax == 24)
+			{
+				InitAnimation(26, 26, 0);
+				idx = 26;
+			}
+		}
+		if (!sfw::getKey('A') && !sfw::getKey('D') /*&& !sfw::getKey(' ')*/)
+		{
+			if (idx >= 0 && idx < 4)
+				idx = 0;
+			else if (idx >= 21 && idx < 25)
+				idx = 21;
+		}
+		
 		sfw::drawTextureMatrix3(handle, idx, WHITE, M.m);
 	}
 
