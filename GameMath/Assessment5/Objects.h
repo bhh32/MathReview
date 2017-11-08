@@ -12,10 +12,12 @@ public:
 	Transform transform;
 	Rigidbody rigidbody;
 	Collider collider;
-	//Collider gravityCollider;
+	Collider gravityCollider;
 	PlayerController controller;
 	Sprite sprite;
 
+	class Platform *current = nullptr;
+	float gravity = -9.8f;
 	bool isGrounded;
 	bool isOnPlatform;
 };
@@ -55,3 +57,4 @@ public:
 bool DoCollision(Player &player, const Wall &wall, float elasticity = 1.f);
 bool DoCollision(Player &player, const Platform &platform, float elasticity = 1.f);
 bool DoCollisionMoving(Player &player, Platform &platform, float elasticity = 1.f);
+bool GravityTestCollision(Player &player, const Wall &wall, const Platform &platform);

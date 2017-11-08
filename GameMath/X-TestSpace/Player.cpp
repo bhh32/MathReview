@@ -10,6 +10,8 @@ bool DoCollision(Player & player, const Wall & wall, float elasticity)
 		Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
 		return true;
 	}
+
+	return false;
 }
 
 bool DoCollision(Ball & ball, const Wall & wall, float elasticity)
@@ -22,6 +24,8 @@ bool DoCollision(Ball & ball, const Wall & wall, float elasticity)
 		Static_Resolution(ball.transform.position, ball.rigidbody.velocity, hit, elasticity);
 		return true;
 	}
+
+	return false;
 }
 
 bool DoCollision(Player & player, Ball & ball, float elasticity)
@@ -36,4 +40,6 @@ bool DoCollision(Player & player, Ball & ball, float elasticity)
 			               hit, elasticity);
 		return true;
 	}
+
+	return false;
 }

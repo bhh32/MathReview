@@ -67,16 +67,17 @@ void Static_Resolution(vec2 &pos, vec2 &velocity, const Collision &hit, float el
 	// Reflect the velocity
 	if (hit.axis.y == 1 || hit.axis.y == -1)
 	{
-		velocity.y = 0;// -Reflect(velocity, hit.axis * hit.handedness).y * elasticity;
+		velocity.y = -Reflect(velocity, hit.axis * hit.handedness).y * elasticity;
 	}
-	//else if (hit.axis.x == 1 || hit.axis.x == -1)
-	//{
-	//	velocity.x = -Reflect(velocity, hit.axis * hit.handedness).x * elasticity;
-	//}
-	//else
-	//{
-	//	velocity = -Reflect(velocity, hit.axis * hit.handedness) * elasticity;
-	//}
+	else if (hit.axis.x == 1 || hit.axis.x == -1)
+	{
+		// **Note: Taking out elasticity negates the sides of objects for collision to make then "unclimbable"
+		velocity.x = -Reflect(velocity, hit.axis * hit.handedness).x * .7f;
+	}
+	else
+	{
+		velocity = -Reflect(velocity, hit.axis * hit.handedness) * elasticity;
+	}
 }
 
 void Dynamic_Resolution(vec2 &Apos, vec2 &Avelocity, float Amass, vec2 &Bpos, vec2 &Bvelocity, float Bmass, const Collision &hit, float elasticity)

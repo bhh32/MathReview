@@ -42,7 +42,9 @@ public:
 		// Linear Motion
 		acceleration = force / mass;
 		velocity += acceleration * deltaTime + impulse / mass;
-		T.position += velocity * deltaTime;
+		
+		T.setGlobalPosition(T.getGlobalPosition() +
+									velocity * deltaTime);
 
 		impulse = { 0, 0 };
 

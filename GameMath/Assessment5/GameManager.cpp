@@ -10,10 +10,10 @@ GameManager InitObjects()
 		gameManager.player.sprite = sfw::loadTextureMap("../resources/marioBig.png", 21, 2);
 		gameManager.player.transform.demension = vec2{ 50, 75 };
 		gameManager.player.transform.position = vec2{ 400, 300 };
-		gameManager.player.collider.box.extents = { .5, .5 };/*
-		gameManager.player.gravityCollider.box.extents = { .5, .2 };
-		gameManager.player.gravityCollider.box.position.y = -gameManager.player.transform.position.y - */
+		gameManager.player.collider.box.extents = { .5f, .5f };
+		gameManager.player.gravityCollider.box.extents = { 1.f, 1.f };
 		gameManager.player.isGrounded = false;
+		gameManager.player.isOnPlatform = false;
 		gameManager.player.rigidbody.drag = 0.f;
 		gameManager.player.sprite.animTimer = 1.f;
 
@@ -84,7 +84,7 @@ void GameLoop()
 
 	GameManager gameManager;
 	gameManager = InitObjects();
-	
+
 
 	while (sfw::stepContext())
 	{
@@ -160,31 +160,53 @@ void Collision(Player &player, Platform* staticPlatforms,
 	Platform* horizontalPlatforms, Platform* verticalPlatforms,
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground)
 {
-	player.isGrounded = false;
+	//bool isGrounded = false;
 
+
+	//if (sfw::getKey(' '))
+	{
+		player.isGrounded = false;
+		player.transform.setParent();
+		//player.gravity = -9.8f;
+	}
+
+	if (player.isGrounded)
+		player.gravity = 0.f;
+	else if(!player.isGrounded)
+	{
+		player.gravity = -9.8f;
+	}
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, staticPlatforms[i], 0.))
+		if (DoCollision(player, staticPlatforms[i], 0.f))
 		{
+			//isGrounded = true;
 			player.isGrounded = true;
+			player.isOnPlatform = false;
 		}
 	}
 
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, horizontalPlatforms[i], 0.))
+		if (DoCollision(player, horizontalPlatforms[i], 0.f))
 		{
+			player.transform.setParent(&horizontalPlatforms[i].transform);
+			GravityTestCollision(player, ground, horizontalPlatforms[i]);
+			//isGrounded = true;
 			player.isGrounded = true;
-			if (!sfw::getKey('A') && !sfw::getKey('D'))
-				player.rigidbody.velocity.x = horizontalPlatforms[i].rigidbody.velocity.x;
+			player.isOnPlatform = true;
+			//if (!sfw::getKey('A') && !sfw::getKey('D'))
+			//	player.rigidbody.velocity.x = horizontalPlatforms[i].rigidbody.velocity.x;
 		}
 	}
 
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, rightUpPlatforms[i], 0.))
+		if (DoCollision(player, rightUpPlatforms[i], 0.f))
 		{
+			//isGrounded = true;
 			player.isGrounded = true;
+			player.isOnPlatform = true;
 			if (!sfw::getKey('A') && !sfw::getKey('D'))
 			{
 				player.rigidbody.velocity.x = rightUpPlatforms[i].rigidbody.velocity.x;
@@ -194,18 +216,23 @@ void Collision(Player &player, Platform* staticPlatforms,
 		
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, verticalPlatforms[i], 0.))
+		if (DoCollision(player, verticalPlatforms[i], 0.f))
 		{
+			//isGrounded = true;
 			player.isGrounded = true;
 		}
 	}
 
-	if (DoCollision(player, ground, 1.f))
+	if (DoCollision(player, ground, 0.f))
 	{
-
+		//isGrounded = true;
+		GravityTestCollision(player, ground, horizontalPlatforms[0]);
 		player.isGrounded = true;
+		player.isOnPlatform = false;
 		//std::cout << player.rigidbody.velocity.y << std::endl;
 	}
 
+	if (!player.isGrounded)
+		player.rigidbody.force.y += -10;
 	//std::cout << player.isGrounded << std::endl;
 }

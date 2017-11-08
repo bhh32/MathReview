@@ -62,21 +62,46 @@ bool DoCollision(Player &player, const Wall &wall, float elasticity)
 	if (hit.penetrationDepth > 0)
 	{
 		Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
+		player.gravity = 0.f;
 		return true;
 	}
 	else 
 		return false;
 }
 
+bool GravityTestCollision(Player &player, const Wall &wall, const Platform &platform)
+{
+	auto hit = Collides(player.transform, player.collider, platform.transform, platform.collider);
+	auto hitWall = Collides(player.transform, player.collider, platform.transform, platform.collider);
+
+	if (hit.penetrationDepth > 0 || hitWall.penetrationDepth > 0)
+	{
+		if (hit.axis.y == -1 || hitWall.axis.y == 1)
+		{
+			player.isGrounded = true;
+			player.gravity = 0.f;
+			return true;
+		}
+	}
+	player.gravity = -9.8f;
+	return false;
+}
+
+//pos += hit.axis * hit.handedness * hit.penetrationDepth;
 bool DoCollision(Player &player, const Platform &platform, float elasticity)
 {
 	auto hit = Collides(player.transform, player.collider, platform.transform, platform.collider);
 
 	if (!platform.isSoftPlatform)
 	{
-		if(hit.penetrationDepth > 0)
+		if(hit.penetrationDepth >= 0)
 		{
-			Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
+			player.transform.position += hit.axis * hit.handedness * hit.penetrationDepth;
+			//player.rigidbody.velocity.y = 0;
+
+			//Correct and parent if applicable (parent if above the platform)
+			
+			//Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
 			return true;
 		}
 	}

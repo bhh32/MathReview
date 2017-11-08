@@ -30,6 +30,48 @@ mat3 Transform::GetGlobalTransform() const
 		return GetLocalTransform();
 }
 
+vec2 Transform::getGlobalPosition() const
+{
+	return GetGlobalTransform()[2].xy;
+}
+
+void Transform::setGlobalPosition(const vec2 & pos)
+{
+	mat3 p = Inverse(e_parent ? e_parent->GetGlobalTransform() : mat3::Identity());
+
+
+	position = (p * vec3{ pos.x,pos.y,1 }).xy;
+}
+
+vec2 Transform::getGlobalScale() const
+{
+	return vec2{
+		GetGlobalTransform()[0].Magnitude(), // right scale (X)
+		GetGlobalTransform()[1].Magnitude()  // up scale (Y)
+			};
+}
+
+void Transform::setGlobalScale(const vec2 & dim)
+{
+	mat3 p = Inverse(e_parent ? e_parent->GetGlobalTransform() : mat3::Identity());
+
+
+	demension = (p * vec3{ dim.x,dim.y, 0 }).xy;
+}
+
+
+
+void Transform::setParent(Transform * p)
+{
+	vec2 pos = getGlobalPosition();
+	vec2 sca = getGlobalScale();
+
+	e_parent = p;
+
+ 	setGlobalPosition(pos);
+	setGlobalScale(sca);
+}
+
 void DrawMatrix(const mat3 &t, float drawing_scale)
 {
 	// Base position in matrix
