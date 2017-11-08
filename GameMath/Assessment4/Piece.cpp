@@ -10,7 +10,7 @@ void Piece::InitPiece()
 	groundHeight = 18.f;
 	
 	// Setup gravity anf flags for jumping
-	gravity = vec2{ 0.f ,-9.8f };
+	gravity = vec2{ 0.f ,-600.f };
 	isJumping = false;
 	isMaxHeight = false;
 	jumpDelay = 10.f;

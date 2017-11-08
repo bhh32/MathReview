@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "sfwdraw.h"
+#include <iostream>
 
 GameManager InitObjects()
 {
@@ -9,7 +10,9 @@ GameManager InitObjects()
 		gameManager.player.sprite = sfw::loadTextureMap("../resources/marioBig.png", 21, 2);
 		gameManager.player.transform.demension = vec2{ 50, 75 };
 		gameManager.player.transform.position = vec2{ 400, 300 };
-		gameManager.player.collider.box.extents = { .5, .5 };
+		gameManager.player.collider.box.extents = { .5, .5 };/*
+		gameManager.player.gravityCollider.box.extents = { .5, .2 };
+		gameManager.player.gravityCollider.box.position.y = -gameManager.player.transform.position.y - */
 		gameManager.player.isGrounded = false;
 		gameManager.player.rigidbody.drag = 0.f;
 		gameManager.player.sprite.animTimer = 1.f;
@@ -157,40 +160,52 @@ void Collision(Player &player, Platform* staticPlatforms,
 	Platform* horizontalPlatforms, Platform* verticalPlatforms,
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground)
 {
-	if (DoCollision(player, staticPlatforms[0], 0.1f))
+	player.isGrounded = false;
+
+	for (int i = 0; i < 5; ++i)
 	{
-		player.isGrounded = true;
-	}
-	else if (DoCollision(player, horizontalPlatforms[0], 0.1f))
-	{
-		player.isGrounded = true;
-		if (!sfw::getKey('A') && !sfw::getKey('D'))
-			player.rigidbody.velocity.x = horizontalPlatforms[0].rigidbody.velocity.x;
-	}
-	else if (DoCollision(player, horizontalPlatforms[1], 0.1f))
-	{
-		player.isGrounded = true;
-		if (!sfw::getKey('A') && !sfw::getKey('D'))
-			player.rigidbody.velocity.x = horizontalPlatforms[1].rigidbody.velocity.x;
-	}
-	else if (DoCollision(player, rightUpPlatforms[0], 0.01f))
-	{
-		player.isGrounded = true;
-		if (!sfw::getKey('A') && !sfw::getKey('D'))
+		if (DoCollision(player, staticPlatforms[i], 0.))
 		{
-			player.rigidbody.velocity.x = rightUpPlatforms[0].rigidbody.velocity.x;
+			player.isGrounded = true;
 		}
 	}
-	else if (DoCollision(player, verticalPlatforms[0], 0.01f))
+
+	for (int i = 0; i < 5; ++i)
 	{
+		if (DoCollision(player, horizontalPlatforms[i], 0.))
+		{
+			player.isGrounded = true;
+			if (!sfw::getKey('A') && !sfw::getKey('D'))
+				player.rigidbody.velocity.x = horizontalPlatforms[i].rigidbody.velocity.x;
+		}
+	}
+
+	for (int i = 0; i < 5; ++i)
+	{
+		if (DoCollision(player, rightUpPlatforms[i], 0.))
+		{
+			player.isGrounded = true;
+			if (!sfw::getKey('A') && !sfw::getKey('D'))
+			{
+				player.rigidbody.velocity.x = rightUpPlatforms[i].rigidbody.velocity.x;
+			}
+		}
+	}
+		
+	for (int i = 0; i < 5; ++i)
+	{
+		if (DoCollision(player, verticalPlatforms[i], 0.))
+		{
+			player.isGrounded = true;
+		}
+	}
+
+	if (DoCollision(player, ground, 1.f))
+	{
+
 		player.isGrounded = true;
+		//std::cout << player.rigidbody.velocity.y << std::endl;
 	}
-	else
-	{
-		player.isGrounded = false;
-	}
-	if (DoCollision(player, ground, .01f))
-	{
-		player.isGrounded = true;
-	}
+
+	//std::cout << player.isGrounded << std::endl;
 }

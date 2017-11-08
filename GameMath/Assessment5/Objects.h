@@ -12,6 +12,7 @@ public:
 	Transform transform;
 	Rigidbody rigidbody;
 	Collider collider;
+	//Collider gravityCollider;
 	PlayerController controller;
 	Sprite sprite;
 

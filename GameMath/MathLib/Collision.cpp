@@ -65,7 +65,18 @@ void Static_Resolution(vec2 &pos, vec2 &velocity, const Collision &hit, float el
 	pos += hit.axis * hit.handedness * hit.penetrationDepth;
 
 	// Reflect the velocity
-	velocity = -Reflect(velocity, hit.axis * hit.handedness) * elasticity;
+	if (hit.axis.y == 1 || hit.axis.y == -1)
+	{
+		velocity.y = 0;// -Reflect(velocity, hit.axis * hit.handedness).y * elasticity;
+	}
+	//else if (hit.axis.x == 1 || hit.axis.x == -1)
+	//{
+	//	velocity.x = -Reflect(velocity, hit.axis * hit.handedness).x * elasticity;
+	//}
+	//else
+	//{
+	//	velocity = -Reflect(velocity, hit.axis * hit.handedness) * elasticity;
+	//}
 }
 
 void Dynamic_Resolution(vec2 &Apos, vec2 &Avelocity, float Amass, vec2 &Bpos, vec2 &Bvelocity, float Bmass, const Collision &hit, float elasticity)
