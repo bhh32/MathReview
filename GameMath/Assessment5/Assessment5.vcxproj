@@ -129,6 +129,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DrawShape.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DrawShape.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Sprite.h" />

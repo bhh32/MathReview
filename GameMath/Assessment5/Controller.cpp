@@ -40,7 +40,6 @@ void PlatformController::PollHorizontalPlatform(Platform *platform, float minPos
 				p->isMovingRight = false;
 			}
 		}
-
 		else if (!p->isMovingRight)
 		{
 			p->rigidbody.velocity.x = -p->transform.GetGlobalTransform()[0].x * speed;
