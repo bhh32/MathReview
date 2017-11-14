@@ -19,7 +19,7 @@ void PlayerController::Poll(Player &player)
 	}
 	if (sfw::getKey(' ') && player.isGrounded)
 	{
-		player.rigidbody.impulse.y += (player.gravity * -1) * 25.f;
+		player.rigidbody.impulse.y += (player.gravity * -1) * 30.f;
 
 	}
 	if (player.isGrounded)

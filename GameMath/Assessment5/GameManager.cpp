@@ -9,7 +9,7 @@ GameManager InitObjects()
 		// Initialize the player
 		gameManager.player.sprite = sfw::loadTextureMap("../resources/marioBig.png", 21, 2);
 		gameManager.player.transform.demension = vec2{ 50, 75 };
-		gameManager.player.transform.position = vec2{ 400, 300 };
+		gameManager.player.transform.position = vec2{ 10, 21 };
 		gameManager.player.collider.box.extents = { .5f, .5f };
 		gameManager.player.gravityCollider.box.extents = { 1.f, 1.f };
 		gameManager.player.isGrounded = false;
@@ -18,17 +18,17 @@ GameManager InitObjects()
 		gameManager.player.sprite.animTimer = 1.f;
 
 		// Initialize the ground
-		gameManager.ground.sprite = sfw::loadTextureMap("../resources/wall.png");
-		gameManager.ground.transform.demension = { 2000, 20 };
-		gameManager.ground.transform.position = { 400, 0 };
-		gameManager.ground.collider.box.extents = { .5, .5 };
+		gameManager.ground.sprite = sfw::loadTextureMap("../resources/ground.png");
+		gameManager.ground.transform.demension = { 2000, 500 };
+		gameManager.ground.transform.position = { 400, -200 };
+		gameManager.ground.collider.box.extents = { .42f, .42f };
 
 		// Intialize Static Platforms
 		for (int i = 0; i < 10; ++i)
 			gameManager.staticPlatforms[i].InitStaticPlatforms(gameManager.staticPlatforms[i]);
 
 		gameManager.staticPlatforms[0].sprite = sfw::loadTextureMap("../resources/wall.png");
-		gameManager.staticPlatforms[0].transform.demension = vec2{ 110, 200 };
+		gameManager.staticPlatforms[0].transform.demension = vec2{ 150, 200 };
 		gameManager.staticPlatforms[0].transform.position = vec2{ 500, 40 };
 
 		// Initialize Horizontal Moving Platforms
@@ -37,14 +37,10 @@ GameManager InitObjects()
 
 		// Specific Stats of Each Horizontal Moving Platform
 		gameManager.horizontalPlatforms[0].transform.demension = vec2{ 88, 18 };
-		gameManager.horizontalPlatforms[0].transform.position = vec2{ 200, 45 };
-		gameManager.horizontalPlatforms[0].minPosX = 200.f;
-		gameManager.horizontalPlatforms[0].maxPosX = 300.f;
-
-		gameManager.horizontalPlatforms[1].transform.demension = vec2{ 88, 18 };
-		gameManager.horizontalPlatforms[1].transform.position = vec2{ 600, 300 };
-		gameManager.horizontalPlatforms[1].minPosX = 600.f;
-		gameManager.horizontalPlatforms[1].maxPosX = 750.f;
+		gameManager.horizontalPlatforms[0].transform.position = vec2{ 600, 300 };
+		gameManager.horizontalPlatforms[0].minPosX = 600.f;
+		gameManager.horizontalPlatforms[0].maxPosX = 750.f;		
+		
 
 		// General Initialization of upRight Moving Platforms
 		for (int i = 0; i < 5; ++i)
@@ -52,9 +48,9 @@ GameManager InitObjects()
 
 		// Specific Stats of Each upRight Moving Platform
 		gameManager.upRightPlatforms[0].transform.demension = vec2{ 88, 18 };
-		gameManager.upRightPlatforms[0].transform.position = vec2{ 30,50 };
+		gameManager.upRightPlatforms[0].transform.position = vec2{ 25, 30 };
 		gameManager.upRightPlatforms[0].minPosX = 110.f;
-		gameManager.upRightPlatforms[0].maxPosX = 220.f;
+		gameManager.upRightPlatforms[0].maxPosX = 275.f;
 
 		// General Initialization of upLeft Moving Platforms
 		for (int i = 0; i < 5; ++i)
@@ -110,7 +106,8 @@ void GameLoop()
 
 }
 
-float GetPlayerBottom(Player & player)
+// Helper Function to get the bottom of the player's transform
+float GetPlayerBottom(Player &player)
 {
 	return player.transform.position.y - (player.transform.demension.y / 2);
 }
@@ -145,12 +142,12 @@ void Draw(Player &player, Platform* staticPlatforms, Platform* horizontalPlatfor
 	Platform* verticalPlatforms, Platform* leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground,
 	float dt)
 {
-	// Draw and Update the player animation
-	player.sprite.DrawAnim(player.transform, player.isGrounded, dt);
-
 	// Draw The Ground
 	ground.sprite.Draw(ground.transform);
 
+	// Draw and Update the player animation
+	player.sprite.DrawAnim(player.transform, player.isGrounded, dt);
+	
 	// Draw The Moving Platforms
 	for (int i = 0; i < 2; ++i)
 	{
@@ -166,42 +163,39 @@ void Collision(Player &player, Platform* staticPlatforms,
 	Platform* horizontalPlatforms, Platform* verticalPlatforms,
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground)
 {
+	// Set the current parent to null
 	player.transform.setParent();
+	// Set grounded to false (ensures gravity works properly)
 	player.isGrounded = false;
+	// Set that the player isn't on a platform
 	player.isOnPlatform = false;
 
-	if (player.isGrounded)
-		player.gravity = 0.f;
-	else if(!player.isGrounded)
-	{
-		player.gravity = -9.8f;
-	}
-
+	// Check for collision with all static platforms
 	for (int i = 0; i < 5; ++i)
 	{
 		// Get the current postion of the bottom of the player
 		float playerBottom = GetPlayerBottom(player);
 
-		// Current right Up moving platform's top
-		float platformTop = staticPlatforms[i].transform.position.y + (staticPlatforms[i].transform.demension.y / 2);
+		// Current right Up moving platform's top - 10 pixels to ensure grounding properly works
+		float platformTop = staticPlatforms[i].transform.position.y + (staticPlatforms[i].transform.demension.y / 2) - 10.f;
 
 		if (DoCollision(player, staticPlatforms[i], 0.f) && playerBottom > platformTop)
 		{
+			player.transform.setParent(&staticPlatforms[i].transform);
 			player.isGrounded = true;
-			player.isOnPlatform = false;
+			player.isOnPlatform = true;
+			break;
 		}
 	}
 
+	// Check for collision with all horizontal moving platforms
 	for (int i = 0; i < 5; ++i)
 	{
 		// Get the current position of the bottom of the player
 		float playerBottom = GetPlayerBottom(player);
 
-		// Current horiztonal moving platform's top
-		float platformTop = horizontalPlatforms[i].transform.position.y + (horizontalPlatforms[i].transform.demension.y / 2);
-
 		// Check to see if the player is colliding with the platform AND they are on top of it
-		if (DoCollision(player, horizontalPlatforms[i], 0.f) &&	playerBottom > platformTop)
+		if (DoCollision(player, horizontalPlatforms[i], 0.f) &&	playerBottom > horizontalPlatforms[i].transform.position.y)
 		{
 			player.transform.setParent(&horizontalPlatforms[i].transform);
 			player.isGrounded = true;
@@ -210,12 +204,13 @@ void Collision(Player &player, Platform* staticPlatforms,
 		}
 	}
 
+	// Check for collision with all right up diagnonal moving platforms
 	for (int i = 0; i < 5; ++i)
 	{
 		// Get the current postion of the bottom of the player
 		float playerBottom = GetPlayerBottom(player);
 
-		// Current right Up moving platform's top
+		// Check to see if the player is colliding with the platform AND they are on top of it
 		float platformTop = rightUpPlatforms[i].transform.position.y + (rightUpPlatforms[i].transform.demension.y / 2);
 
 		if (DoCollision(player, rightUpPlatforms[i], 0.f) && playerBottom > platformTop)
@@ -226,29 +221,34 @@ void Collision(Player &player, Platform* staticPlatforms,
 				break;
 		}
 	}
-		
+	
+	// Check for collision with all vertical moving platforms
 	for (int i = 0; i < 5; ++i)
 	{
 		// Get the current postion of the bottom of the player
 		float playerBottom = GetPlayerBottom(player);
-
-		// Current right Up moving platform's top
-		float platformTop = verticalPlatforms[i].transform.position.y + (verticalPlatforms[i].transform.demension.y / 2);
 		
-		if (DoCollision(player, verticalPlatforms[i], 0.f) && playerBottom > platformTop)
+		// Check to see if the player is colliding with the platform AND they are on top of it
+		if (DoCollision(player, verticalPlatforms[i], 0.f) && playerBottom > verticalPlatforms[i].transform.position.y)
 		{
-			player.transform.setParent(&verticalPlatforms[i].transform);
+   			player.transform.setParent(&verticalPlatforms[i].transform);
 			player.isGrounded = true;
+			player.isOnPlatform = true;
+			break;
 		}
 	}
 
+	// Check for collision with the ground
 	if (DoCollision(player, ground, 0.f))
 	{
-		GravityTestCollision(player, ground, horizontalPlatforms[0]);
-		player.isGrounded = true;
-		player.isOnPlatform = false;
+		                                         // Here as a place holder for the gravity test fucntion to work
+			GravityTestCollision(player, ground, horizontalPlatforms[0]);
+			player.isGrounded = true;
+			player.isOnPlatform = false;
 	}
 
+	// Check to see if the player is in the air...
 	if (!player.isGrounded)
-		player.rigidbody.force.y += -9.8f;
+		// ... if they are turn gravity back on
+		player.gravity = -9.8f;
 }
