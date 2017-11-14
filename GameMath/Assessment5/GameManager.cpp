@@ -19,7 +19,7 @@ GameManager InitObjects()
 
 		// Initialize the ground
 		gameManager.ground.sprite = sfw::loadTextureMap("../resources/wall.png");
-		gameManager.ground.transform.demension = { 800, 20 };
+		gameManager.ground.transform.demension = { 2000, 20 };
 		gameManager.ground.transform.position = { 400, 0 };
 		gameManager.ground.collider.box.extents = { .5, .5 };
 
@@ -89,6 +89,7 @@ void GameLoop()
 	while (sfw::stepContext())
 	{
 		float dt = sfw::getDeltaTime();
+		dt = dt > 1 ? 1 : dt;
 
 		// Update Everything
 
@@ -107,6 +108,11 @@ void GameLoop()
 			gameManager.verticalPlatforms, gameManager.upLeftPlatforms, gameManager.upRightPlatforms, gameManager.ground, dt);	
 	}
 
+}
+
+float GetPlayerBottom(Player & player)
+{
+	return player.transform.position.y - (player.transform.demension.y / 2);
 }
 
 // Poll All Controllers
@@ -160,8 +166,9 @@ void Collision(Player &player, Platform* staticPlatforms,
 	Platform* horizontalPlatforms, Platform* verticalPlatforms,
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground)
 {
-	player.isGrounded = false;		
 	player.transform.setParent();
+	player.isGrounded = false;
+	player.isOnPlatform = false;
 
 	if (player.isGrounded)
 		player.gravity = 0.f;
@@ -169,11 +176,17 @@ void Collision(Player &player, Platform* staticPlatforms,
 	{
 		player.gravity = -9.8f;
 	}
+
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, staticPlatforms[i], 0.f))
+		// Get the current postion of the bottom of the player
+		float playerBottom = GetPlayerBottom(player);
+
+		// Current right Up moving platform's top
+		float platformTop = staticPlatforms[i].transform.position.y + (staticPlatforms[i].transform.demension.y / 2);
+
+		if (DoCollision(player, staticPlatforms[i], 0.f) && playerBottom > platformTop)
 		{
-			//isGrounded = true;
 			player.isGrounded = true;
 			player.isOnPlatform = false;
 		}
@@ -181,33 +194,50 @@ void Collision(Player &player, Platform* staticPlatforms,
 
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, horizontalPlatforms[i], 0.f))
+		// Get the current position of the bottom of the player
+		float playerBottom = GetPlayerBottom(player);
+
+		// Current horiztonal moving platform's top
+		float platformTop = horizontalPlatforms[i].transform.position.y + (horizontalPlatforms[i].transform.demension.y / 2);
+
+		// Check to see if the player is colliding with the platform AND they are on top of it
+		if (DoCollision(player, horizontalPlatforms[i], 0.f) &&	playerBottom > platformTop)
 		{
-			if(player.transform.e_parent == nullptr)
-				player.transform.setParent(&horizontalPlatforms[i].transform);
-			//isGrounded = true;
+			player.transform.setParent(&horizontalPlatforms[i].transform);
 			player.isGrounded = true;
 			player.isOnPlatform = true;
+			break;
 		}
 	}
 
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, rightUpPlatforms[i], 0.f))
+		// Get the current postion of the bottom of the player
+		float playerBottom = GetPlayerBottom(player);
+
+		// Current right Up moving platform's top
+		float platformTop = rightUpPlatforms[i].transform.position.y + (rightUpPlatforms[i].transform.demension.y / 2);
+
+		if (DoCollision(player, rightUpPlatforms[i], 0.f) && playerBottom > platformTop)
 		{
-			if (player.transform.e_parent == nullptr)
 				player.transform.setParent(&rightUpPlatforms[i].transform);
-			player.isGrounded = true;
-			player.isOnPlatform = true;
+				player.isGrounded = true;
+				player.isOnPlatform = true;
+				break;
 		}
 	}
 		
 	for (int i = 0; i < 5; ++i)
 	{
-		if (DoCollision(player, verticalPlatforms[i], 0.f))
+		// Get the current postion of the bottom of the player
+		float playerBottom = GetPlayerBottom(player);
+
+		// Current right Up moving platform's top
+		float platformTop = verticalPlatforms[i].transform.position.y + (verticalPlatforms[i].transform.demension.y / 2);
+		
+		if (DoCollision(player, verticalPlatforms[i], 0.f) && playerBottom > platformTop)
 		{
-			if (verticalPlatforms[i].transform.position.y < player.transform.position.y)
-			    player.transform.setParent(&verticalPlatforms[i].transform);
+			player.transform.setParent(&verticalPlatforms[i].transform);
 			player.isGrounded = true;
 		}
 	}
@@ -220,5 +250,5 @@ void Collision(Player &player, Platform* staticPlatforms,
 	}
 
 	if (!player.isGrounded)
-		player.rigidbody.force.y += -10;
+		player.rigidbody.force.y += -9.8f;
 }

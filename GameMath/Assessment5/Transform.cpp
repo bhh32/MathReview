@@ -68,7 +68,7 @@ void Transform::setParent(Transform * p)
 
 	e_parent = p;
 
- 	setGlobalPosition(pos);
+	setGlobalPosition(pos);
 	setGlobalScale(sca);
 }
 

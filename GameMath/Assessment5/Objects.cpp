@@ -33,6 +33,7 @@ void Platform::InitVerticalPlatforms(Platform &platform)
 
 void Platform::InitUpRightPlatforms(Platform &platform)
 {
+	
 	platform.sprite = sfw::loadTextureMap("../resources/paddle.png");
 	platform.collider.box.extents = { .5, .5 };
 	platform.rigidbody.mass = 100.f;
@@ -87,25 +88,17 @@ bool GravityTestCollision(Player &player, const Wall &wall, const Platform &plat
 	return false;
 }
 
-//pos += hit.axis * hit.handedness * hit.penetrationDepth;
 bool DoCollision(Player &player, const Platform &platform, float elasticity)
 {
 	auto hit = Collides(player.transform, player.collider, platform.transform, platform.collider);
 
-	if (!platform.isSoftPlatform)
-	{
-		if(hit.penetrationDepth >= 0)
-		{			
-			//Correct and parent if applicable (parent if above the platform)
-			player.transform.position += hit.axis * hit.handedness * hit.penetrationDepth;
-
-			if (hit.axis.x <= -1)
-				player.transform.e_parent = nullptr;
-
-			
-			//Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
-			return true;
-		}
+	if(hit.penetrationDepth >= 0)
+	{			
+		//Correct according to global position
+		player.transform.setGlobalPosition(player.transform.getGlobalPosition() + hit.axis * hit.handedness * hit.penetrationDepth);
+		
+		//Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
+		return true;
 	}
 
 	return false;

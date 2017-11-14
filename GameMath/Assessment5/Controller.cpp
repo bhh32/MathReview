@@ -13,7 +13,7 @@ void PlayerController::Poll(Player &player)
 	{
 		player.rigidbody.force.x = -player.transform.GetGlobalTransform()[0].x * 5.f;
 	}
-	if (!sfw::getKey('A') & !sfw::getKey('D') && !player.isOnPlatform)
+	if (!sfw::getKey('A') & !sfw::getKey('D'))
 	{
 		player.rigidbody.velocity.x = 0.f;
 	}

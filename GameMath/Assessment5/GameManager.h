@@ -15,6 +15,7 @@ struct GameManager
 };
 GameManager InitObjects();
 void GameLoop();
+float GetPlayerBottom(Player &player);
 void PollControllers(Player &player, Platform* staticPlatforms, 
 	Platform* horizontalPlatforms, Platform* verticalPlatforms, 
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, float dt);
