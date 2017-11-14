@@ -4,29 +4,35 @@
 // Poll for input and apply changes to the rigidbody
 
 void PlayerController::Poll(Player &player)
+{
+	if (sfw::getKey('D'))
 	{
-		if (sfw::getKey('D'))
-		{
-				player.rigidbody.force.x = player.transform.GetGlobalTransform()[0].x * 5.f;
-		}
-		if (sfw::getKey('A'))
-		{
-				player.rigidbody.force.x = -player.transform.GetGlobalTransform()[0].x * 5.f;
-		}
-		if (!sfw::getKey('A') & !sfw::getKey('D') && !player.isOnPlatform)
-		{
-			player.rigidbody.velocity.x = 0.f;
-		}
-		if (sfw::getKey(' ') && player.isGrounded)
-			player.rigidbody.impulse.y += (player.gravity * -1) * 25.f;
-
-		if (player.isGrounded)
-		{
-			player.rigidbody.velocity.y = 0;
-		}
-		else if(!player.isGrounded)
-			player.rigidbody.velocity.y += player.gravity;
+		player.rigidbody.force.x = player.transform.GetGlobalTransform()[0].x * 5.f;
 	}
+	if (sfw::getKey('A'))
+	{
+		player.rigidbody.force.x = -player.transform.GetGlobalTransform()[0].x * 5.f;
+	}
+	if (!sfw::getKey('A') & !sfw::getKey('D') && !player.isOnPlatform)
+	{
+		player.rigidbody.velocity.x = 0.f;
+	}
+	if (sfw::getKey(' ') && player.isGrounded)
+	{
+		player.rigidbody.impulse.y += (player.gravity * -1) * 25.f;
+
+	}
+	if (player.isGrounded)
+	{
+		player.rigidbody.velocity.y = 0;
+		player.rigidbody.drag = 3.f;
+	}
+	else if (!player.isGrounded)
+	{
+		player.rigidbody.drag = 0.f;
+		player.rigidbody.velocity.y += player.gravity;
+	}
+}
 
 void PlatformController::PollHorizontalPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx)
 	{

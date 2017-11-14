@@ -14,7 +14,7 @@ GameManager InitObjects()
 		gameManager.player.gravityCollider.box.extents = { 1.f, 1.f };
 		gameManager.player.isGrounded = false;
 		gameManager.player.isOnPlatform = false;
-		gameManager.player.rigidbody.drag = 0.f;
+		gameManager.player.rigidbody.drag = 3.f;
 		gameManager.player.sprite.animTimer = 1.f;
 
 		// Initialize the ground
@@ -160,15 +160,8 @@ void Collision(Player &player, Platform* staticPlatforms,
 	Platform* horizontalPlatforms, Platform* verticalPlatforms,
 	Platform *leftUpPlatforms, Platform* rightUpPlatforms, Wall &ground)
 {
-	//bool isGrounded = false;
-
-
-	//if (sfw::getKey(' '))
-	{
-		player.isGrounded = false;
-		player.transform.setParent();
-		//player.gravity = -9.8f;
-	}
+	player.isGrounded = false;		
+	player.transform.setParent();
 
 	if (player.isGrounded)
 		player.gravity = 0.f;
@@ -190,13 +183,11 @@ void Collision(Player &player, Platform* staticPlatforms,
 	{
 		if (DoCollision(player, horizontalPlatforms[i], 0.f))
 		{
-			player.transform.setParent(&horizontalPlatforms[i].transform);
-			GravityTestCollision(player, ground, horizontalPlatforms[i]);
+			if(player.transform.e_parent == nullptr)
+				player.transform.setParent(&horizontalPlatforms[i].transform);
 			//isGrounded = true;
 			player.isGrounded = true;
 			player.isOnPlatform = true;
-			//if (!sfw::getKey('A') && !sfw::getKey('D'))
-			//	player.rigidbody.velocity.x = horizontalPlatforms[i].rigidbody.velocity.x;
 		}
 	}
 
@@ -204,13 +195,10 @@ void Collision(Player &player, Platform* staticPlatforms,
 	{
 		if (DoCollision(player, rightUpPlatforms[i], 0.f))
 		{
-			//isGrounded = true;
+			if (player.transform.e_parent == nullptr)
+				player.transform.setParent(&rightUpPlatforms[i].transform);
 			player.isGrounded = true;
 			player.isOnPlatform = true;
-			if (!sfw::getKey('A') && !sfw::getKey('D'))
-			{
-				player.rigidbody.velocity.x = rightUpPlatforms[i].rigidbody.velocity.x;
-			}
 		}
 	}
 		
@@ -218,21 +206,19 @@ void Collision(Player &player, Platform* staticPlatforms,
 	{
 		if (DoCollision(player, verticalPlatforms[i], 0.f))
 		{
-			//isGrounded = true;
+			if (verticalPlatforms[i].transform.position.y < player.transform.position.y)
+			    player.transform.setParent(&verticalPlatforms[i].transform);
 			player.isGrounded = true;
 		}
 	}
 
 	if (DoCollision(player, ground, 0.f))
 	{
-		//isGrounded = true;
 		GravityTestCollision(player, ground, horizontalPlatforms[0]);
 		player.isGrounded = true;
 		player.isOnPlatform = false;
-		//std::cout << player.rigidbody.velocity.y << std::endl;
 	}
 
 	if (!player.isGrounded)
 		player.rigidbody.force.y += -10;
-	//std::cout << player.isGrounded << std::endl;
 }

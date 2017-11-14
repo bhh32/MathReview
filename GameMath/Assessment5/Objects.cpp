@@ -76,7 +76,7 @@ bool GravityTestCollision(Player &player, const Wall &wall, const Platform &plat
 
 	if (hit.penetrationDepth > 0 || hitWall.penetrationDepth > 0)
 	{
-		if (hit.axis.y == -1 || hitWall.axis.y == 1)
+		if (hit.axis.y == -1)
 		{
 			player.isGrounded = true;
 			player.gravity = 0.f;
@@ -95,11 +95,13 @@ bool DoCollision(Player &player, const Platform &platform, float elasticity)
 	if (!platform.isSoftPlatform)
 	{
 		if(hit.penetrationDepth >= 0)
-		{
-			player.transform.position += hit.axis * hit.handedness * hit.penetrationDepth;
-			//player.rigidbody.velocity.y = 0;
-
+		{			
 			//Correct and parent if applicable (parent if above the platform)
+			player.transform.position += hit.axis * hit.handedness * hit.penetrationDepth;
+
+			if (hit.axis.x <= -1)
+				player.transform.e_parent = nullptr;
+
 			
 			//Static_Resolution(player.transform.position, player.rigidbody.velocity, hit, elasticity);
 			return true;
