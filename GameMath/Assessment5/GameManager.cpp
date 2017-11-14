@@ -24,12 +24,21 @@ GameManager InitObjects()
 		gameManager.ground.collider.box.extents = { .42f, .42f };
 
 		// Intialize Static Platforms
-		for (int i = 0; i < 10; ++i)
+		for (int i = 0; i < 3; ++i)
 			gameManager.staticPlatforms[i].InitStaticPlatforms(gameManager.staticPlatforms[i]);
 
+		// Specific Stats of Each Static Platform
 		gameManager.staticPlatforms[0].sprite = sfw::loadTextureMap("../resources/wall.png");
 		gameManager.staticPlatforms[0].transform.demension = vec2{ 150, 200 };
 		gameManager.staticPlatforms[0].transform.position = vec2{ 500, 40 };
+
+		gameManager.staticPlatforms[1].sprite = gameManager.staticPlatforms[0].sprite;
+		gameManager.staticPlatforms[1].transform.demension = vec2{ 150, 50 };
+		gameManager.staticPlatforms[1].transform.position = vec2{ 0, 350 };
+
+		gameManager.staticPlatforms[2].sprite = gameManager.ground.sprite;
+		gameManager.staticPlatforms[2].transform.demension = vec2{ 150, 50 };
+		gameManager.staticPlatforms[2].transform.position = vec2{ 800, 500 };
 
 		// Initialize Horizontal Moving Platforms
 		for (int i = 0; i < 5; ++i)
@@ -37,7 +46,7 @@ GameManager InitObjects()
 
 		// Specific Stats of Each Horizontal Moving Platform
 		gameManager.horizontalPlatforms[0].transform.demension = vec2{ 88, 18 };
-		gameManager.horizontalPlatforms[0].transform.position = vec2{ 600, 300 };
+		gameManager.horizontalPlatforms[0].transform.position = vec2{ 600, 250 };
 		gameManager.horizontalPlatforms[0].minPosX = 600.f;
 		gameManager.horizontalPlatforms[0].maxPosX = 750.f;		
 		
@@ -58,7 +67,9 @@ GameManager InitObjects()
 
 		// Specific Stats of Each UpLeft Moving Platform
 		gameManager.upLeftPlatforms[0].transform.demension = vec2{ 88, 18 };
-		gameManager.upLeftPlatforms[0].transform.position = vec2{ 600, 80 };
+		gameManager.upLeftPlatforms[0].transform.position = vec2{ 520, 280 };
+		gameManager.upLeftPlatforms[0].minPosX = 485.f;
+		gameManager.upLeftPlatforms[0].maxPosX = 600.f;
 
 		// General Initialization of Vertical Moving Platforms
 		for (int i = 0; i < 5; ++i)
@@ -68,7 +79,7 @@ GameManager InitObjects()
 		gameManager.verticalPlatforms[0].transform.demension = vec2{ 88, 18 };
 		gameManager.verticalPlatforms[0].transform.position = vec2{ 500, 180 };
 		gameManager.verticalPlatforms[0].minPosY = 180.f;
-		gameManager.verticalPlatforms[0].maxPosY = 300.f;
+		gameManager.verticalPlatforms[0].maxPosY = 250.f;
 
 	return gameManager;
 }
@@ -130,6 +141,9 @@ void PollControllers(Player &player, Platform *staticPlatforms, Platform *horizo
 		rightUpPlatforms[i].controller.PollDiagonalUpRightPlatform(rightUpPlatforms, rightUpPlatforms[i].minPosX, rightUpPlatforms[i].maxPosX, rightUpPlatforms[i].speed, i);
 		rightUpPlatforms[i].rigidbody.Integrate(rightUpPlatforms[i].transform, dt);
 
+		leftUpPlatforms[i].controller.PollDiagonalUpLeftPlatform(leftUpPlatforms, leftUpPlatforms[i].minPosX, leftUpPlatforms[i].maxPosX, leftUpPlatforms[i].speed, i);
+		leftUpPlatforms[i].rigidbody.Integrate(leftUpPlatforms[i].transform, dt);
+
 		// Update the Vertical Moving Platforms
 		verticalPlatforms[i].controller.PollVerticalPlatform(verticalPlatforms, verticalPlatforms[i].minPosY, verticalPlatforms[i].maxPosY, verticalPlatforms[i].speed, i);
 		verticalPlatforms[i].rigidbody.Integrate(verticalPlatforms[i].transform, dt);
@@ -149,12 +163,18 @@ void Draw(Player &player, Platform* staticPlatforms, Platform* horizontalPlatfor
 	player.sprite.DrawAnim(player.transform, player.isGrounded, dt);
 	
 	// Draw The Moving Platforms
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		staticPlatforms[i].sprite.Draw(staticPlatforms[i].transform);
-		horizontalPlatforms[i].sprite.Draw(horizontalPlatforms[i].transform);
-		rightUpPlatforms[i].sprite.Draw(rightUpPlatforms[i].transform);
-		verticalPlatforms[i].sprite.Draw(verticalPlatforms[i].transform);
+		if(staticPlatforms[i].sprite.handle != -1)
+			staticPlatforms[i].sprite.Draw(staticPlatforms[i].transform);
+		if(horizontalPlatforms[i].sprite.handle != -1)
+			horizontalPlatforms[i].sprite.Draw(horizontalPlatforms[i].transform);
+		if(rightUpPlatforms[i].sprite.handle != -1)
+			rightUpPlatforms[i].sprite.Draw(rightUpPlatforms[i].transform);
+		if (leftUpPlatforms[i].sprite.handle != -1)
+			leftUpPlatforms[i].sprite.Draw(leftUpPlatforms[i].transform);
+		if(verticalPlatforms[i].sprite.handle != -1)
+			verticalPlatforms[i].sprite.Draw(verticalPlatforms[i].transform);
 	}
 }
 
