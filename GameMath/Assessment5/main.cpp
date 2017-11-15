@@ -2,6 +2,7 @@
 
 int main()
 {
+	// Run The Game
 	GameLoop();
 
 	return 0;	

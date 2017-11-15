@@ -167,9 +167,9 @@ float GetPlayerBottom(Player &player)
 }
 
 // Poll All Controllers
-void PollControllers(Player &player, Platform *staticPlatforms, Platform *horizontalPlatforms, 
-	Platform * verticalPlatforms, Platform * leftUpPlatforms, Platform * rightUpPlatforms, 
-	Platform *multiDirPlatforms, float dt)
+void PollControllers(Player &player, Platform* staticPlatforms, Platform* horizontalPlatforms, 
+	Platform* verticalPlatforms, Platform* leftUpPlatforms, Platform* rightUpPlatforms, 
+	Platform* multiDirPlatforms, float dt)
 {
 	// Poll the player controller and Integrate
 	player.controller.Poll(player);
