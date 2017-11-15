@@ -6,6 +6,8 @@ void Platform::InitStaticPlatforms(Platform &platform)
 	platform.collider.box.extents = { .5, .5 };
 	platform.isMovingRight = false;
 	platform.isMovingUp = false;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
 	platform.isSoftPlatform = false;
 }
 
@@ -17,6 +19,8 @@ void Platform::InitHorizontalPlatforms(Platform &platform)
 	platform.speed = 1.5f;
 	platform.isMovingRight = true;
 	platform.isMovingUp = false;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
 	platform.isSoftPlatform = false;
 }
 
@@ -28,6 +32,8 @@ void Platform::InitVerticalPlatforms(Platform &platform)
 	platform.speed = 1.5f;
 	platform.isMovingRight = false;
 	platform.isMovingUp = true;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
 	platform.isSoftPlatform = false;
 }
 
@@ -40,6 +46,8 @@ void Platform::InitUpRightPlatforms(Platform &platform)
 	platform.speed = 1.5f;
 	platform.isMovingRight = true;
 	platform.isMovingUp = true;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
 	platform.isSoftPlatform = false;
 }
 
@@ -51,6 +59,21 @@ void Platform::InitUpLeftPlatforms(Platform &platform)
 	platform.speed = 1.5f;
 	platform.isMovingRight = false;
 	platform.isMovingUp = true;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
+	platform.isSoftPlatform = false;
+}
+
+void Platform::InitMultiDirPlatforms(Platform & platform)
+{
+	platform.sprite = sfw::loadTextureMap("../resources/paddle.png");
+	platform.collider.box.extents = { .5, .5 };
+	platform.rigidbody.mass = 100.f;
+	platform.speed = 1.5f;
+	platform.isMovingRight = true;
+	platform.isMovingUp = true;
+	platform.isMovingDown = false;
+	platform.isMovingLeft = false;
 	platform.isSoftPlatform = false;
 }
 
@@ -68,6 +91,21 @@ bool DoCollision(Player &player, const Wall &wall, float elasticity)
 	}
 	else 
 		return false;
+}
+
+bool DoCollision(Player &player, Goal &goal, float elasticity)
+{
+	auto hit = Collides(player.transform, player.collider, goal.transform, goal.collider);
+	
+	if (hit.penetrationDepth > 0)
+	{
+		goal.transform.position.x = 890.f;
+		player.endGame = true;
+
+		return true;
+	}
+
+	return false;
 }
 
 bool GravityTestCollision(Player &player, const Wall &wall, const Platform &platform)

@@ -12,7 +12,6 @@ public:
 	Transform transform;
 	Rigidbody rigidbody;
 	Collider collider;
-	Collider gravityCollider;
 	PlayerController controller;
 	Sprite sprite;
 
@@ -20,6 +19,15 @@ public:
 	float gravity = -9.8f;
 	bool isGrounded;
 	bool isOnPlatform;
+	bool endGame = false;
+};
+
+class Goal
+{
+public:
+	Transform transform;
+	Collider collider;
+	Sprite sprite;
 };
 
 class Wall
@@ -40,9 +48,12 @@ public:
 	Sprite sprite;
 	bool isSoftPlatform;
 	bool isMovingUp;
+	bool isMovingDown; // Only used for special case platforms
 	bool isMovingRight;
+	bool isMovingLeft; // Only used for special case platforms
 	float minPosX;
 	float maxPosX;
+	float midPosX;     // Only used for special case platforms
 	float minPosY;
 	float maxPosY;
 	float speed;
@@ -52,9 +63,11 @@ public:
 	void InitVerticalPlatforms(Platform &platform);
 	void InitUpRightPlatforms(Platform &platform);
 	void InitUpLeftPlatforms(Platform &platform);
+	void InitMultiDirPlatforms(Platform &platform);
 };
 
 bool DoCollision(Player &player, const Wall &wall, float elasticity = 1.f);
+bool DoCollision(Player &player, Goal &goal, float elasticity = 0.f);
 bool DoCollision(Player &player, const Platform &platform, float elasticity = 1.f);
 bool DoCollisionMoving(Player &player, Platform &platform, float elasticity = 1.f);
 bool GravityTestCollision(Player &player, const Wall &wall, const Platform &platform);

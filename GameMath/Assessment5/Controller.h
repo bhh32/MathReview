@@ -27,4 +27,6 @@ public:
 	void PollDiagonalUpRightPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx);
 
 	void PollDiagonalUpLeftPlatform(Platform *platform, float minPosX, float maxPosX, float speed, int idx);
+
+	void PlatformController::PollMultiDirPlatform(Platform* platform, float minPosX, float midPosX, float maxPosX, float speed, int idx);
 };

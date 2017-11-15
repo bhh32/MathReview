@@ -127,7 +127,7 @@ void PlatformController::PollDiagonalUpLeftPlatform(Platform *platform, float mi
 		if (p->isMovingUp)
 			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
 		else
-			p->rigidbody.velocity.y = platform->transform.GetGlobalTransform()[1].y * speed;
+			p->rigidbody.velocity.y = -platform->transform.GetGlobalTransform()[1].y * speed;
 
 
 		if (!p->isMovingRight)
@@ -141,3 +141,45 @@ void PlatformController::PollDiagonalUpLeftPlatform(Platform *platform, float mi
 			}
 		}
 	}
+
+void PlatformController::PollMultiDirPlatform(Platform* platform, float minPosX, float midPosX, float maxPosX, float speed, int idx)
+{
+	Platform *p = &platform[idx];
+
+	if (p->isMovingRight)
+	{
+		p->rigidbody.velocity.x = p->transform.GetGlobalTransform()[0].x * speed;
+
+		if(p->isMovingUp)
+			p->rigidbody.velocity.y = p->transform.GetGlobalTransform()[1].y * speed;
+
+		if (p->transform.position.x >= 400)
+		{
+			p->isMovingUp = false;
+			p->rigidbody.velocity.y = 0.f;
+		}
+		if (p->transform.position.x > maxPosX)
+		{
+			p->isMovingRight = false;
+			p->isMovingLeft = true;
+		}
+	}
+
+	if (p->isMovingLeft)
+	{
+		p->rigidbody.velocity.x = -platform->transform.GetGlobalTransform()[0].x * speed;
+
+		if (p->transform.position.x <= midPosX + 150)
+		{
+			p->rigidbody.velocity.y = -platform->transform.GetGlobalTransform()[1].y * speed;
+		}
+
+		if (p->transform.position.x <= minPosX)
+		{
+			p->isMovingLeft = false;
+			p->isMovingDown = false;
+			p->isMovingRight = true;
+			p->isMovingUp = true;
+		}
+	}
+}
